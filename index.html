@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Designftw Chatroom</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.esm-browser.js",
+          "@graffiti-garden/implementation-local": "https://cdn.jsdelivr.net/npm/@graffiti-garden/implementation-local@0.6.4/dist/browser/index.js",
+          "@graffiti-garden/implementation-remote": "https://cdn.jsdelivr.net/npm/@graffiti-garden/implementation-remote@0.6.2/dist/browser/index.js",
+          "@graffiti-garden/wrapper-vue": "https://cdn.jsdelivr.net/npm/@graffiti-garden/wrapper-vue@0.7.2/dist/browser/plugin.mjs"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <h1>DesignFTW Chatroom</h1>
+        <div>
+          <button v-if="!$graffitiSession.value" @click="$graffiti.login()">
+            Log In
+          </button>
+          <button v-else @click="$graffiti.logout($graffitiSession.value)">
+            Log Out
+          </button>
+        </div>
+      </header>
+      <main class="chat-container">
+        <template v-if="$graffitiSession.value">
+          <section class="chats">
+            <div class="chats-header">
+              <h2>Chats</h2>
+              <button class="add-btn" @click="showCreateForm = !showCreateForm">
+                +
+              </button>
+            </div>
+
+            <form
+              v-if="showCreateForm"
+              @submit.prevent="createChat($graffitiSession.value)"
+              class="create-chat-form"
+            >
+              <fieldset :disabled="creatingChat">
+                <input
+                  type="text"
+                  v-model="chatName"
+                  placeholder="Chat Name"
+                  ref="chatInput"
+                />
+                <input
+                  type="text"
+                  v-model="allowedActors"
+                  placeholder="Allowed actors (comma-separated)"
+                />
+                <input
+                  type="submit"
+                  :value="creatingChat? 'Creating...' : 'Create Chat'"
+                />
+              </fieldset>
+            </form>
+
+            <graffiti-discover
+              v-slot="{ objects: renameObjects }"
+              :channels="['designftw']"
+              :schema="renameSchema"
+            >
+              <graffiti-discover
+                v-slot="{ objects: groupChatObjects, isInitialPolling }"
+                :channels="['designftw']"
+                :schema="groupChatSchema"
+              >
+                <ul class="chat-list">
+                  <li v-if="isInitialPolling">Loading...</li>
+                  <li v-for="object of groupChatObjects" :key="object.url">
+                    <a
+                      href="#"
+                      @click.prevent="selectedChannel = object.value.object.channel; currentChatName = object.value.object.name"
+                    >
+                      <strong>
+                        {{ object.actor }}<span
+                          v-if="object.actor===$graffitiSession.value.actor"
+                        >
+                          (you)</span
+                        ></strong
+                      >: {{ renameObjects.filter(r => r.value.describes ===
+                      object.value.object.channel).sort((a, b) => b.lastModified
+                      - a.lastModified)[0]?.value.name ||
+                      object.value.object.name }}
+                    </a>
+                  </li>
+                </ul>
+              </graffiti-discover>
+            </graffiti-discover>
+          </section>
+
+          <section class="messages" v-if="selectedChannel">
+            <graffiti-discover
+              v-slot="{ objects: renameObjects }"
+              :channels="[selectedChannel]"
+              :schema="renameSchema"
+            >
+              <div class="chat-header">
+                <h2>
+                  {{ renameObjects .filter(r => r.value.describes ===
+                  selectedChannel) .sort((a, b) => b.lastModified -
+                  a.lastModified)[0]?.value.name || currentChatName }}
+                </h2>
+                <button
+                  class="menu-btn"
+                  @click="this.showRightSidebar = !this.showRightSidebar"
+                >
+                  Menu
+                </button>
+              </div>
+
+              <form @submit.prevent="sendMessage($graffitiSession.value)">
+                <fieldset :disabled="sending">
+                  <input
+                    type="text"
+                    v-model="myMessage"
+                    placeholder="Message"
+                    ref="messageInput"
+                    v-focus
+                  />
+                  <input
+                    type="submit"
+                    :value="sending? 'Sending...' : 'Send'"
+                  />
+                </fieldset>
+              </form>
+
+              <graffiti-discover
+                v-slot="{ objects: messageObjects, isInitialPolling }"
+                :channels="[selectedChannel]"
+                :schema="{
+                    properties: {
+                        value: {
+                            required: ['content', 'published'],
+                            properties: {
+                                content: { type: 'string' },
+                                published: { type: 'number' }
+                            }
+                        }
+                    }
+                }"
+              >
+                <ul>
+                  <li v-if="isInitialPolling">Loading...</li>
+                  <li
+                    v-for="object of messageObjects.sort((a, b) => b.value.published - a.value.published)"
+                    :key="object.url"
+                  >
+                    <div v-if="object.actor===$graffitiSession.value.actor">
+                      <div v-if="object.value.editing">
+                        <form
+                          @submit.prevent="updateMessage(object, $graffitiSession.value)"
+                        >
+                          <input
+                            type="text"
+                            v-model="object.value.editContent"
+                            ref="messageInput"
+                          />
+                          <input type="submit" value="Update" />
+                        </form>
+                      </div>
+                      <div v-else>
+                        <strong> {{ object.actor }}(you)</strong>:
+                        {{object.value.content }}
+                        <button @click="startEditing(object)">Edit</button>
+                        <button @click="deleteMessage(object)">Delete</button>
+                      </div>
+                    </div>
+
+                    <div v-else>
+                      <strong>{{ object.actor }}</strong>: {{
+                      object.value.content }}
+                    </div>
+                  </li>
+                </ul>
+              </graffiti-discover>
+            </graffiti-discover>
+          </section>
+
+          <section
+            class="right-sidebar"
+            v-if="selectedChannel && showRightSidebar"
+          >
+            <graffiti-discover
+              v-slot="{ objects: chatObjects }"
+              :channels="['designftw']"
+              :schema="groupChatSchema"
+            >
+              <template
+                v-if="chatObjects.filter(c =>
+                    c.value.object.channel === selectedChannel).sort((a, b) =>
+                    b.lastModified - a.lastModified) [0]?.value.object.participants.includes($graffitiSession.value.actor)"
+              >
+                <button disabled class="search">Search (TBD)</button>
+                <!-- RENAME -->
+                <button
+                  class="rename-btn"
+                  @click="showRenameForm = !showRenameForm"
+                >
+                  Rename
+                </button>
+
+                <form
+                  v-if="showRenameForm"
+                  @submit.prevent="renameGroup($graffitiSession.value)"
+                  class="rename-chat-form"
+                >
+                  <input v-model="renameText" placeholder="New chat name" />
+                  <input type="submit" value="Rename" />
+                </form>
+
+                <!-- PARTICIPANTS -->
+                <button
+                  class="rename-btn"
+                  @click="showParticipantList = !showParticipantList"
+                >
+                  Participants
+                </button>
+                <ul class="participant-list" v-if="showParticipantList">
+                  <li
+                    v-for="participant in  chatObjects.filter(c =>
+                    c.value.object.channel === selectedChannel).sort((a, b) =>
+                    b.lastModified - a.lastModified) [0]?.value.object.participants"
+                    :key="participant"
+                  >
+                    {{ participant }}
+                  </li>
+                </ul>
+
+                <!-- INVITE -->
+
+                <button
+                  class="rename-btn"
+                  @click="showInviteForm = !showInviteForm"
+                >
+                  Invite User
+                </button>
+
+                <form
+                  v-if="showInviteForm"
+                  @submit.prevent="inviteUser($graffitiSession.value, chatObjects.filter(c =>
+                  c.value.object.channel === selectedChannel).sort((a, b) =>
+                  b.lastModified - a.lastModified) [0]?.value.object.participants)"
+                  class="rename-chat-form"
+                >
+                  <input
+                    v-model="inviteeActor"
+                    placeholder="Actor ID to invite"
+                  />
+                  <input type="submit" value="Invite" />
+                </form>
+
+                <!-- LEAVE -->
+                <button
+                  class="rename-btn"
+                  @click="leaveChat($graffitiSession.value)"
+                >
+                  Leave
+                </button>
+              </template>
+            </graffiti-discover>
+          </section>
+        </template>
+      </main>
+    </div>
+    <script src="index.js" type="module"></script>
+  </body>
+</html>

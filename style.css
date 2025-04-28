@@ -1,0 +1,164 @@
+* {
+  font-family: Helvetica Neue, Segoe UI, sans-serif;
+}
+
+button,
+input {
+  margin: 3px;
+}
+
+input[type="text"] {
+  width: 300px;
+}
+
+:checked + input[type="text"] {
+  color: gray;
+  font-style: italic;
+  text-decoration: line-through;
+}
+
+fieldset {
+  display: contents;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin: 0.5em 0;
+  align-content: center;
+  text-align: center;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 2em;
+  background-color: #5137f3;
+  border-bottom: 1px solid #ccc;
+  color: #fff;
+}
+
+.chat-container {
+  display: flex;
+  font-family: sans-serif;
+  background-color: #f3f0ff;
+}
+
+.chats {
+  width: 300px;
+  background-color: #ddd3f5;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.messages {
+  flex-grow: 1;
+  background-color: #fafafa;
+  overflow-y: auto;
+}
+
+.chat-list {
+  list-style: none;
+  padding: 0;
+}
+
+.chat-list li {
+  margin: 0.5em 0;
+}
+
+.chat-list a {
+  text-decoration: none;
+  color: #333;
+  display: inline-block;
+  padding: 0.4em 0.6em;
+  border-radius: 0.4em;
+  transition: background-color 0.2s;
+}
+.chat-list a:hover {
+  background-color: #e2dcf8;
+}
+
+.chats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #c8bfff;
+  padding: 1em;
+}
+.add-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #6a5acd;
+  transition: transform 0.2s;
+}
+.add-btn:hover {
+  transform: scale(1.2);
+  background-color: #e2dcf8;
+}
+.create-chat-form {
+  margin-bottom: 1em;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #c8bfff;
+  padding: 1em;
+}
+.rename-btn {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  color: #6a5acd;
+  transition: transform 0.2s;
+}
+.rename-btn:hover {
+  transform: scale(1.2);
+  background-color: #e2dcf8;
+}
+.rename-chat-form {
+  margin-bottom: 1em;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #6a5acd;
+  transition: transform 0.2s;
+}
+.menu-btn:hover {
+  transform: scale(1.2);
+  background-color: #e2dcf8;
+}
+
+.right-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  background-color: #eee6ff;
+  border-left: 1px solid #ccc;
+  padding: 1em;
+  overflow-y: auto;
+}
+
+.search {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  border: none;
+  background-color: #dcd6f7;
+  color: #444;
+  border-radius: 5px;
+  cursor: not-allowed;
+}
+
+.participant-list {
+  list-style: none;
+  padding: 0;
+}
