@@ -1,0 +1,41 @@
+<div class="chat-list-container">
+  <div class="chats-header">
+    <h2>Chats</h2>
+    <router-link
+      :to="`/create-chat`"
+      class="add-btn"
+      @click="showCreateForm = !showCreateForm"
+      >+</router-link
+    >
+  </div>
+
+  <graffiti-discover
+    v-slot="{ objects: renameObjects }"
+    :channels="['designftw']"
+    :schema="renameSchema"
+  >
+    <graffiti-discover
+      v-slot="{ objects: groupChatObjects, isInitialPolling }"
+      :channels="['designftw']"
+      :schema="groupChatSchema"
+    >
+      <ul class="chat-list">
+        <li v-if="isInitialPolling">Loading...</li>
+        <li
+          v-for="object of groupChatObjects.sort((a, b) => b.lastModified - a.lastModified)"
+          :key="object.url"
+        >
+          <router-link
+            :class="{ 'active-chat': object.value.object.channel === currentChatChannel }"
+            :to="`/chat/${object.value.object.channel}`"
+            @click.prevent="currentChatName = object.value.object.name"
+          >
+            {{ renameObjects .filter(r => r.value.describes ===
+            object.value.object.channel) .sort((a, b) => b.lastModified -
+            a.lastModified)[0]?.value.name || object.value.object.name }}
+          </router-link>
+        </li>
+      </ul>
+    </graffiti-discover>
+  </graffiti-discover>
+</div>

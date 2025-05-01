@@ -1,0 +1,32 @@
+<div
+  v-if="object.actor === $graffitiSession.value.actor"
+  class="message-bubble-you"
+>
+  <div v-if="object.value.editing">
+    <form
+      @submit.prevent="updateMessage(object, $graffitiSession.value)"
+      class="message-edit-form"
+    >
+      <input
+        type="text"
+        v-model="object.value.editContent"
+        ref="messageInput"
+      />
+      <input type="submit" value="Update" />
+    </form>
+  </div>
+  <div v-else>
+    {{object.value.content }}
+    <message-actions
+      v-if="object.actor === $graffitiSession.value.actor"
+      :onEdit="() => startEditing(object)"
+      :onDelete="() => deleteMessage(object)"
+    />
+  </div>
+</div>
+<div v-else class="other-wrapper">
+  <div class="message-metadata">
+    <strong>{{ object.actor }}</strong>
+  </div>
+  <div class="message-bubble-other">{{ object.value.content }}</div>
+</div>

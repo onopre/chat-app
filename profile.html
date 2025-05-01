@@ -1,0 +1,38 @@
+<div class="profile-view">
+  <h2>
+    {{username}}
+    <button @click="copyActor">{{ copied ? "Copied!" : "Copy" }}</button>
+  </h2>
+  <div class="profile-field">
+    <label>Name:</label>
+    <span v-if="!editingField.name">{{ profile.name }}</span>
+    <input v-else v-model="profile.name" />
+    <button @click="toggleEdit('name')">
+      {{ editingField.name ? 'Save' : 'Edit' }}
+    </button>
+  </div>
+
+  <div class="profile-field">
+    <label>Pronouns:</label>
+    <span v-if="!editingField.pronouns">{{ profile.pronouns }}</span>
+    <input v-else v-model="profile.pronouns" />
+    <button @click="toggleEdit('pronouns')">
+      {{ editingField.pronouns ? 'Save' : 'Edit' }}
+    </button>
+  </div>
+
+  <div class="profile-field">
+    <label>Bio:</label>
+    <span v-if="!editingField.bio">{{ profile.bio }}</span>
+    <textarea v-else v-model="profile.bio"></textarea>
+    <button @click="toggleEdit('bio')">
+      {{ editingField.bio ? 'Save' : 'Edit' }}
+    </button>
+  </div>
+</div>
+<friends />
+<footer>
+  <router-link :to="`/`">
+    <button @click="$graffiti.logout($graffitiSession.value)">Log Out</button>
+  </router-link>
+</footer>

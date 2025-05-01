@@ -1,0 +1,50 @@
+<div class="chat-container">
+  <ChatList />
+  <form
+    @submit.prevent="createChat($graffitiSession.value)"
+    class="create-chat-form"
+  >
+    <fieldset :disabled="creatingChat">
+      <div class="creating-chat-header">
+        <input
+          type="text"
+          v-model="chatName"
+          placeholder="Chat Name"
+          ref="chatInput"
+        />
+        <input
+          type="submit"
+          :value="creatingChat? 'Creating...' : 'Create Chat'"
+        />
+      </div>
+      <div class="creating-chat-body">
+        <input
+          type="text"
+          v-model="participantQuery"
+          placeholder="Type to search friends"
+          @keydown.enter.prevent="addFriend"
+        />
+        <div class="selected-participants">
+          <span
+            class="participant-pill"
+            v-for="(p, i) in participants"
+            :key="p"
+          >
+            {{ p }}
+            <button @click="participants.splice(i, 1)">×</button>
+          </span>
+        </div>
+        <ul class="friend-list">
+          <li
+            v-for="friend in filteredFriends"
+            :key="friend"
+            @click="participants.push(friend); participantQuery = ''"
+            style="cursor: pointer"
+          >
+            {{ friend }}
+          </li>
+        </ul>
+      </div>
+    </fieldset>
+  </form>
+</div>
