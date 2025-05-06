@@ -1,5 +1,9 @@
 <div class="profile-page">
   <div class="profile-view">
+    <h2>
+      {{username}}
+      <button @click="copyActor">{{ copied ? "Copied!" : "Copy" }}</button>
+    </h2>
     <graffiti-discover
       v-slot="{ objects: profiles, isInitialPolling }"
       :channels="[username]"
@@ -7,8 +11,8 @@
     >
       <p v-if="isInitialPolling">Loading...</p>
       <template v-else>
-        <template v-if="profiles.length">
-          <template v-if="username !== $graffitiSession.value.actor">
+        <template v-if="username !== $graffitiSession.value.actor">
+          <template v-if="profiles.length">
             <div class="profile-display">
               <div class="profile-header">
                 <img
@@ -18,71 +22,66 @@
                 />
                 <div class="profile-info">
                   <h3 class="profile-name">
-                    {{ getLatestProfile(profiles).value.name }}
+                    {{ this.profileEditable.name }}
                     <span
-                      v-if="getLatestProfile(profiles).value.pronouns"
+                      v-if="this.profileEditable.pronouns"
                       class="profile-pronouns"
                     >
-                      ({{ getLatestProfile(profiles).value.pronouns }})
+                      ({{ this.profileEditable.pronouns }})
                     </span>
                   </h3>
                 </div>
               </div>
-              <div class="Bio">{{getLatestProfile(profiles).value.bio }}</div>
+              <div class="Bio">{{this.profileEditable.bio }}</div>
             </div>
           </template>
-          <template v-else>
-            <div v-if="!editingProfile" class="profile-display">
-              <div class="profile-header">
-                <img
-                  class="profile-icon"
-                  :src="getLatestProfile(profiles).value.icon"
-                  alt="Profile Icon"
-                />
-                <div class="profile-info">
-                  <h3 class="profile-name">
-                    {{ getLatestProfile(profiles).value.name }}
-                    <span
-                      v-if="getLatestProfile(profiles).value.pronouns"
-                      class="profile-pronouns"
-                    >
-                      ({{ getLatestProfile(profiles).value.pronouns }})
-                    </span>
-                  </h3>
-                  <button @click="this.editingProfile = true">
-                    Edit Profile
-                  </button>
-                </div>
-              </div>
-              <div class="Bio">{{getLatestProfile(profiles).value.bio }}</div>
-            </div>
-
-            <form
-              v-else
-              @submit.prevent="updateProfile(getLatestProfile(profiles), $graffitiSession.value,)"
-            >
-              <div class="profile-field">
-                <label>Name:</label>
-                <input v-model="profileEditable.name" />
-              </div>
-              <div class="profile-field">
-                <label>Pronouns:</label>
-                <input v-model="profileEditable.pronouns" />
-              </div>
-              <div class="profile-field">
-                <label>Bio:</label>
-                <textarea v-model="profileEditable.bio"></textarea>
-              </div>
-              <div class="profile-field">
-                <label>Profile Picture:</label>
-                <input v-model="profileEditable.icon" />
-              </div>
-              <button type="submit">Save</button>
-            </form></template
-          >
+          <p v-else>User {{username}} does not exist.</p>
         </template>
         <template v-else>
-          <p>User {{username}} does not exist.</p>
+          <div v-if="!editingProfile" class="profile-display">
+            <div class="profile-header">
+              <img
+                class="profile-icon"
+                :src="getLatestProfile(profiles).value.icon"
+                alt="Profile Icon"
+              />
+              <div class="profile-info">
+                <h3 class="profile-name">
+                  {{ this.profileEditable.name }}
+                  <span
+                    v-if="this.profileEditable.pronouns"
+                    class="profile-pronouns"
+                  >
+                    ({{ this.profileEditable.pronouns }})
+                  </span>
+                </h3>
+                <button @click="this.editingProfile = true">
+                  Edit Profile
+                </button>
+              </div>
+            </div>
+            <div class="Bio">{{this.profileEditable.bio }}</div>
+          </div>
+
+          <form v-else @submit.prevent="updateProfile($graffitiSession.value)">
+            <div class="profile-field">
+              <label>Name:</label>
+              <input v-model="profileEditable.name" />
+            </div>
+            <div class="profile-field">
+              <label>Pronouns:</label>
+              <input v-model="profileEditable.pronouns" />
+            </div>
+            <div class="profile-field">
+              <label>Bio:</label>
+              <textarea v-model="profileEditable.bio"></textarea>
+            </div>
+            <div class="profile-field">
+              <label>Profile Picture:</label>
+              <input v-model="profileEditable.icon" />
+            </div>
+            <button type="submit">Save</button>
+          </form>
         </template>
       </template>
     </graffiti-discover>

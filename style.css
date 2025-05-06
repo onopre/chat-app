@@ -7,6 +7,7 @@ body {
   padding: 0;
 }
 #app {
+  background-color: #f3f0ff;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -31,7 +32,8 @@ a {
   padding: 0;
 }
 
-button {
+button,
+input[type="submit"] {
   background-color: #5137f3;
   color: white;
   border: none;
@@ -44,6 +46,9 @@ button {
 }
 
 button:hover {
+  background-color: #3e29c9;
+}
+input[type="submit"]:hover {
   background-color: #3e29c9;
 }
 

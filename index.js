@@ -17,7 +17,7 @@ const router = createRouter({
     // Add your routes here
     { path: "/", component: ChatList },
     { path: "/chat/:channel", component: Chat, props: true },
-    { path: "/profile/:username", component: Profile, props: true },
+    { path: "/profile", component: Profile, props: true },
     { path: "/create-chat", component: CreateChat },
   ],
 });
@@ -25,44 +25,51 @@ const router = createRouter({
 createApp({
   components: {
     ChatList: defineAsyncComponent(ChatList),
+    Profile: defineAsyncComponent(Profile),
+    Chat: defineAsyncComponent(Chat),
+    CreateChat: defineAsyncComponent(CreateChat),
+  },
+  computed: {
+    actor() {
+      return this.$graffitiSession.value.actor;
+    },
   },
   methods: {
     async createAccount() {
-      const actor = this.$graffitiSession.value.actor;
       const profileObjectsGenerator = this.$graffiti.discover(
-        [actor],
+        [this.actor],
         profileSchema
       );
-
       const profileObjects = [];
-
       for await (const { object } of profileObjectsGenerator) {
         profileObjects.push(object);
       }
       //console.log("profileObjects", profileObjects);
 
       const actorProfiles = profileObjects?.filter(
-        (p) => p.value.describes === actor
+        (p) => p.value.describes === this.actor
       );
       console.log("actorProfiles", actorProfiles);
       if (actorProfiles?.length > 0) {
         console.log("profile already exists");
         return;
       }
+
+      console.log("Creating account");
       const value = {
         activity: "Create",
         type: "Profile",
-        name: actor,
+        name: this.actor,
         pronouns: "",
         bio: "",
         icon: "/user.svg",
-        describes: actor,
+        describes: this.actor,
         published: Date.now(),
         generator: "https://onopre.github.io/chat-app/",
       };
-      const channels = [actor, "designftw-2025-studio2"];
-      console.log("value", value);
-      console.log("channels", channels);
+      //const channels = [this.actor, "designftw-2025-studio2"];
+      const channels = [this.actor];
+
       await this.$graffiti.put(
         {
           value: value,
@@ -75,7 +82,7 @@ createApp({
 })
   .use(router)
   .use(GraffitiPlugin, {
-    //graffiti: new GraffitiLocal(),
-    graffiti: new GraffitiRemote(),
+    graffiti: new GraffitiLocal(),
+    //graffiti: new GraffitiRemote(),
   })
   .mount("#app");

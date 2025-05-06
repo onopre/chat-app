@@ -1,5 +1,15 @@
+.profile-friends {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
 .friends {
-  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   margin: 0 auto 2rem auto;
   padding: 1rem;
   background-color: #ddd3f5;
@@ -40,4 +50,42 @@
 
 .friends button:hover {
   color: #3e29c9;
+  background-color: #ddd3f5;
 }
+
+.friends form {
+  color: #3e29c9;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 1rem;
+}
+#friendActor {
+  flex-grow: 1;
+  padding: 0.5rem;
+  min-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+/*.friends form {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+  #friendActor {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 800px;
+  min-width: 300px;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}*/

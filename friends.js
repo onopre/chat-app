@@ -19,7 +19,7 @@ export async function Friends() {
 
     methods: {
       copyActor() {
-        navigator.clipboard.writeText(this.$graffitiSession.value.actor);
+        navigator.clipboard.writeText(this.username);
         this.copied = true;
         setTimeout(() => (this.copied = false), 500);
       },

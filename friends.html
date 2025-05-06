@@ -1,56 +1,57 @@
-<div class="friends">
-  <h2>
-    Username: {{username}}
-    <button @click="copyActor">{{ copied ? "Copied!" : "Copy" }}</button>
-  </h2>
-
-  <form @submit.prevent="addFriend(friendActor, $graffitiSession.value)">
-    <label for="friendActor"> Choose a friend to add: </label>
-    <input
-      id="friendActor"
-      v-model="friendActor"
-      placeholder="https://alice.example.com"
-    />
-    <input type="submit" value="Add Friend" />
-  </form>
-
-  <article>
-    <h2>My Friends</h2>
-    <ul>
-      <li v-for="friend in accepted">
-        {{ friend }}
-        <button
-          @click="friendObjects
+<div v-if="username === this.$graffitiSession.value.actor" class="profile-view">
+  <aritcle class="friends">
+    <form @submit.prevent="addFriend(friendActor, $graffitiSession.value)">
+      <label for="friendActor"> Choose a friend to add </label>
+      <input
+        id="friendActor"
+        v-model="friendActor"
+        placeholder="https://alice.example.com"
+      />
+      <input type="submit" value="Add Friend" />
+    </form>
+  </aritcle>
+  <article class="profile-friends">
+    <div class="friends">
+      <h2>My Friends</h2>
+      <ul>
+        <li v-for="friend in accepted">
+          {{ friend }}
+          <button
+            @click="friendObjects
                     .filter(f => f.value.target === friend)
                     .forEach(f => $graffiti.delete(f))"
-        >
-          Unfriend
-        </button>
-      </li>
-    </ul>
+          >
+            Unfriend
+          </button>
+        </li>
+      </ul>
+    </div>
 
-    <h2>Friend Requests</h2>
-    <ul>
-      <li v-for="friend in friendRequests">
-        {{ friend }}
-        <button @click="addFriend(friend, $graffitiSession.value)">
-          Confirm
-        </button>
-      </li>
-    </ul>
-
-    <h2>Sent Requests</h2>
-    <ul>
-      <li v-for="friend in sentRequests">
-        {{ friend }}
-        <button
-          @click="friendObjects
+    <div class="friends">
+      <h2>Friend Requests</h2>
+      <ul>
+        <li v-for="friend in friendRequests">
+          {{ friend }}
+          <button @click="addFriend(friend, $graffitiSession.value)">
+            Confirm
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="friends">
+      <h2>Sent Requests</h2>
+      <ul>
+        <li v-for="friend in sentRequests">
+          {{ friend }}
+          <button
+            @click="friendObjects
                     .filter(f => f.value.target === friend)
                     .forEach(f => $graffiti.delete(f))"
-        >
-          Cancel
-        </button>
-      </li>
-    </ul>
+          >
+            Cancel
+          </button>
+        </li>
+      </ul>
+    </div>
   </article>
 </div>
