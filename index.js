@@ -34,55 +34,10 @@ createApp({
       return this.$graffitiSession.value.actor;
     },
   },
-  methods: {
-    async createAccount() {
-      const profileObjectsGenerator = this.$graffiti.discover(
-        [this.actor],
-        profileSchema
-      );
-      const profileObjects = [];
-      for await (const { object } of profileObjectsGenerator) {
-        profileObjects.push(object);
-      }
-      //console.log("profileObjects", profileObjects);
-
-      const actorProfiles = profileObjects?.filter(
-        (p) => p.value.describes === this.actor
-      );
-      console.log("actorProfiles", actorProfiles);
-      if (actorProfiles?.length > 0) {
-        console.log("profile already exists");
-        return;
-      }
-
-      console.log("Creating account");
-      const value = {
-        activity: "Create",
-        type: "Profile",
-        name: this.actor,
-        pronouns: "",
-        bio: "",
-        icon: "/user.svg",
-        describes: this.actor,
-        published: Date.now(),
-        generator: "https://onopre.github.io/chat-app/",
-      };
-      //const channels = [this.actor, "designftw-2025-studio2"];
-      const channels = [this.actor];
-
-      await this.$graffiti.put(
-        {
-          value: value,
-          channels: channels,
-        },
-        this.$graffitiSession.value
-      );
-    },
-  },
 })
   .use(router)
   .use(GraffitiPlugin, {
-    graffiti: new GraffitiLocal(),
-    //graffiti: new GraffitiRemote(),
+    //graffiti: new GraffitiLocal(),
+    graffiti: new GraffitiRemote(),
   })
   .mount("#app");
