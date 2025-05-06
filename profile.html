@@ -38,6 +38,13 @@
           <p v-else>User {{username}} does not exist.</p>
         </template>
         <template v-else>
+          <ul v-for="object of profiles">
+            <li v-if="object.value.describes === $graffitiSession.value.actor">
+              {{ delete(object)}}
+              <!--{{ object.value}}-->
+            </li>
+          </ul>
+
           <div v-if="!editingProfile" class="profile-display">
             <div class="profile-header">
               <img

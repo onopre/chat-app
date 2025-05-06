@@ -66,6 +66,11 @@ export async function Profile() {
         this.copied = true;
         setTimeout(() => (this.copied = false), 500);
       },
+      async delete(object) {
+        console.log("deleting profile");
+        console.log("object", object);
+        await this.$graffiti.delete(object);
+      },
 
       prepareNewAccount() {
         const value = {
