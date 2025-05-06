@@ -1,38 +1,97 @@
-<div class="profile-view">
-  <h2>
-    {{username}}
-    <button @click="copyActor">{{ copied ? "Copied!" : "Copy" }}</button>
-  </h2>
-  <div class="profile-field">
-    <label>Name:</label>
-    <span v-if="!editingField.name">{{ profile.name }}</span>
-    <input v-else v-model="profile.name" />
-    <button @click="toggleEdit('name')">
-      {{ editingField.name ? 'Save' : 'Edit' }}
-    </button>
+<div class="profile-page">
+  <div class="profile-view">
+    <graffiti-discover
+      v-slot="{ objects: profiles, isInitialPolling }"
+      :channels="[username]"
+      :schema="profileSchema"
+    >
+      <p v-if="isInitialPolling">Loading...</p>
+      <template v-else>
+        <template v-if="profiles.length">
+          <template v-if="username !== $graffitiSession.value.actor">
+            <div class="profile-display">
+              <div class="profile-header">
+                <img
+                  class="profile-icon"
+                  :src="getLatestProfile(profiles).value.icon"
+                  alt="Profile Icon"
+                />
+                <div class="profile-info">
+                  <h3 class="profile-name">
+                    {{ getLatestProfile(profiles).value.name }}
+                    <span
+                      v-if="getLatestProfile(profiles).value.pronouns"
+                      class="profile-pronouns"
+                    >
+                      ({{ getLatestProfile(profiles).value.pronouns }})
+                    </span>
+                  </h3>
+                </div>
+              </div>
+              <div class="Bio">{{getLatestProfile(profiles).value.bio }}</div>
+            </div>
+          </template>
+          <template v-else>
+            <div v-if="!editingProfile" class="profile-display">
+              <div class="profile-header">
+                <img
+                  class="profile-icon"
+                  :src="getLatestProfile(profiles).value.icon"
+                  alt="Profile Icon"
+                />
+                <div class="profile-info">
+                  <h3 class="profile-name">
+                    {{ getLatestProfile(profiles).value.name }}
+                    <span
+                      v-if="getLatestProfile(profiles).value.pronouns"
+                      class="profile-pronouns"
+                    >
+                      ({{ getLatestProfile(profiles).value.pronouns }})
+                    </span>
+                  </h3>
+                  <button @click="this.editingProfile = true">
+                    Edit Profile
+                  </button>
+                </div>
+              </div>
+              <div class="Bio">{{getLatestProfile(profiles).value.bio }}</div>
+            </div>
+
+            <form
+              v-else
+              @submit.prevent="updateProfile(getLatestProfile(profiles), $graffitiSession.value,)"
+            >
+              <div class="profile-field">
+                <label>Name:</label>
+                <input v-model="profileEditable.name" />
+              </div>
+              <div class="profile-field">
+                <label>Pronouns:</label>
+                <input v-model="profileEditable.pronouns" />
+              </div>
+              <div class="profile-field">
+                <label>Bio:</label>
+                <textarea v-model="profileEditable.bio"></textarea>
+              </div>
+              <div class="profile-field">
+                <label>Profile Picture:</label>
+                <input v-model="profileEditable.icon" />
+              </div>
+              <button type="submit">Save</button>
+            </form></template
+          >
+        </template>
+        <template v-else>
+          <p>User {{username}} does not exist.</p>
+        </template>
+      </template>
+    </graffiti-discover>
   </div>
 
-  <div class="profile-field">
-    <label>Pronouns:</label>
-    <span v-if="!editingField.pronouns">{{ profile.pronouns }}</span>
-    <input v-else v-model="profile.pronouns" />
-    <button @click="toggleEdit('pronouns')">
-      {{ editingField.pronouns ? 'Save' : 'Edit' }}
-    </button>
-  </div>
-
-  <div class="profile-field">
-    <label>Bio:</label>
-    <span v-if="!editingField.bio">{{ profile.bio }}</span>
-    <textarea v-else v-model="profile.bio"></textarea>
-    <button @click="toggleEdit('bio')">
-      {{ editingField.bio ? 'Save' : 'Edit' }}
-    </button>
-  </div>
+  <friends :username="username" />
+  <footer>
+    <router-link :to="`/`">
+      <button @click="$graffiti.logout($graffitiSession.value)">Log Out</button>
+    </router-link>
+  </footer>
 </div>
-<friends />
-<footer>
-  <router-link :to="`/`">
-    <button @click="$graffiti.logout($graffitiSession.value)">Log Out</button>
-  </router-link>
-</footer>

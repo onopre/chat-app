@@ -1,4 +1,9 @@
 <div class="friends">
+  <h2>
+    Username: {{username}}
+    <button @click="copyActor">{{ copied ? "Copied!" : "Copy" }}</button>
+  </h2>
+
   <form @submit.prevent="addFriend(friendActor, $graffitiSession.value)">
     <label for="friendActor"> Choose a friend to add: </label>
     <input

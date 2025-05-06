@@ -1,61 +1,56 @@
-/*.router-link-active {
-  background-color: lightblue;
-  color: #fff;
-}*/
 * {
   font-family: Helvetica Neue, Segoe UI, sans-serif;
 }
 
-html,
-body,
+body {
+  margin: 0;
+  padding: 0;
+}
 #app {
   display: flex;
   flex-direction: column;
   height: 100vh;
   margin: 0;
 }
-router-view {
+main {
+  background-color: #f3f0ff;
+  padding: 0;
+  margin: 0;
+}
+/*router-view {
   flex-grow: 1;
   display: flex;
   overflow: hidden;
-}
+  padding: 0;
+  margin: 0;
+}*/
 
 a {
   text-decoration: none;
-}
-
-.app-header h1 a {
-  color: #fff;
-}
-.app-header h2 a {
-  color: #fff;
+  margin: 0;
+  padding: 0;
 }
 
 button {
+  background-color: #5137f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
   margin: 3px;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #3e29c9;
 }
 
 :checked + input[type="text"] {
   color: gray;
   font-style: italic;
   text-decoration: line-through;
-}
-
-.app-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em 2em;
-  background-color: #5137f3;
-  border-bottom: 1px solid #ccc;
-  color: #fff;
-}
-
-@media (max-width: 600px) {
-  .app-header {
-    padding: 0.5em 1em;
-  }
 }
 
 .login {
@@ -557,139 +552,6 @@ button {
 }
 .rename-chat-form {
   margin-bottom: 1em;
-}
-
-.profile-view {
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-  background-color: #f3f0ff;
-  max-width: 600px;
-  margin: 2rem auto;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-}
-.profile-view h2 {
-  font-size: 1.8rem;
-  margin: 1rem auto;
-  text-align: center;
-  color: #5137f3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-.profile-view h2 button,
-.profile-copy-btn {
-  background-color: #5137f3;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.profile-view h2 button:hover,
-.profile-copy-btn:hover {
-  background-color: #3e29c9;
-}
-
-.profile-field {
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.profile-field label {
-  font-weight: bold;
-  color: #5137f3;
-  font-size: 1rem;
-}
-
-.profile-field span {
-  font-size: 1rem;
-  color: #333;
-  background-color: #f9f8ff;
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.profile-field input,
-.profile-field textarea {
-  padding: 0.6rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  background-color: #fff;
-  color: #333;
-}
-
-.profile-field textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-.profile-field button {
-  align-self: flex-start;
-  background-color: #5137f3;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-size: 0.95rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.profile-field button:hover {
-  background-color: #3e29c9;
-}
-
-.friends {
-  max-width: 600px;
-  margin: 0 auto 2rem auto;
-  padding: 1rem;
-  background-color: #f3f0ff;
-  border-radius: 12px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.04);
-}
-
-.friends h2 {
-  color: #5137f3;
-  margin-bottom: 0.5rem;
-}
-
-.friends ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.friends li {
-  padding: 0.5rem 1rem;
-  margin: 0.3rem 0;
-  background-color: #f9f8ff;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.friends button {
-  background: none;
-  border: none;
-  color: #5137f3;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.friends button:hover {
-  color: #3e29c9;
 }
 
 /* Footer */

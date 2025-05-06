@@ -1,0 +1,24 @@
+.app-header h1 a {
+  color: #fff;
+  margin-right: 50px;
+}
+.app-header h2 a {
+  color: #fff;
+}
+.app-header h1,
+h2 {
+  margin: 0.4rem 0;
+}
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 2em;
+  background-color: #5137f3;
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .app-header {
+    padding: 0.5em 1em;
+  }
+}
