@@ -69,7 +69,7 @@ export async function Profile() {
       async delete(object) {
         console.log("deleting profile");
         console.log("object", object);
-        await this.$graffiti.delete(object);
+        await this.$graffiti.delete(object, this.$graffitiSession);
       },
 
       prepareNewAccount() {
@@ -84,8 +84,8 @@ export async function Profile() {
           published: Date.now(),
           generator: "https://onopre.github.io/chat-app/",
         };
-        //const channels = [this.actor, "designftw-2025-studio2"];
-        const channels = [this.actor];
+        const channels = [this.actor, "designftw-2025-studio2"];
+        //const channels = [this.actor];
         this.profileEditable = {
           name: value.name,
           pronouns: value.pronouns,
@@ -103,8 +103,8 @@ export async function Profile() {
         console.log("updating profile");
         console.log("profileEditable", this.profileEditable);
 
-        //const channels = [this.actor, "designftw-2025-studio2"];
-        const channels = [this.actor];
+        const channels = [this.actor, "designftw-2025-studio2"];
+        //const channels = [this.actor];
         const value = {
           activity: "Update",
           type: "Profile",
