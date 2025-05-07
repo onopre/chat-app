@@ -1,14 +1,3 @@
-.search {
-  margin: 1em 0;
-  padding: 0.5em 1em;
-  font-size: 1em;
-  border: none;
-  background-color: #dcd6f7;
-  color: #444;
-  border-radius: 5px;
-  cursor: not-allowed;
-}
-
 .chat-menu-btn {
   background: none;
   border: none;
@@ -21,13 +10,28 @@
   transform: scale(1.2);
   background-color: #e2dcf8;
 }
+.chat-menu-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  height: 100%;
+  border-left: 1px solid #ccc;
+}
+.chat-menu-header {
+  padding: 0.2em 1em;
+  background-color: #c8bfff;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
 
 .chat-menu-wrapper {
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   min-width: 300px;
   background-color: #ddd3f5;
-  border-left: 1px solid #ccc;
   padding: 1em;
   overflow-y: auto;
 }
@@ -71,8 +75,92 @@
   padding: 0.5rem;
   transition: background-color 0.2s;
 }
+
+.search-panel {
+  background-color: #ddd3f5;
+  padding: 1em;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  gap: 2rem;
+}
+.search-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.search-box label {
+  font-size: 1.2rem;
+  color: #3e29c9;
+}
+
+input[type="date"],
+input[type="number"],
+select,
+input[type="text"] {
+  padding: 0.4rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+}
+
+.time-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-left: 0.5rem;
+}
+.radio-group label {
+  color: #333;
+}
+
+.keyword-box {
+  position: relative;
+}
+
+.keyword-box input[type="text"] {
+  padding-left: 2rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-btn {
+  font-size: 1.4rem;
+  padding: 0.6rem 1rem;
+}
+
 @media (max-width: 600px) {
   .chat-menu-wrapper {
+    width: 100%;
+  }
+  .chat-menu-header {
+    width: 100%;
+  }
+  .search-panel {
     width: 100%;
   }
 }

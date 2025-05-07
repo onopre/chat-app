@@ -1,65 +1,137 @@
-<div class="chat-menu-wrapper">
+<graffiti-discover
+  v-slot="{ objects: groupChatObjects, isInitialPolling }"
+  :channels="[currentChatChannel]"
+  :schema="groupChatSchema"
+>
   <graffiti-discover
-    v-slot="{ objects: chatObjects }"
+    v-slot="{ objects: renameObjects, isRenameInitialPolling }"
     :channels="[currentChatChannel]"
-    :schema="groupChatSchema"
+    :schema="renameSchema"
   >
-    <button disabled class="search">Search (TBD)</button>
-    <!-- RENAME -->
-    <button class="chat-menu-btn" @click="showRenameForm = !showRenameForm">
-      Rename
-    </button>
+    <div v-if="isInitialPolling || isRenameInitialPolling">Loading...</div>
+    <div v-else class="chat-menu-container">
+      <div class="chat-menu-header">
+        <h2 v-if="!searching">
+          {{ renameObjects.sort((a, b) => b.lastModified -
+          a.lastModified)[0]?.value.name ||
+          groupChatObjects[0]?.value.object.name || "no name"}}
+        </h2>
+        <h2 v-else>Search</h2>
+      </div>
+      <div v-if="!searching" class="chat-menu-wrapper">
+        <button class="searching" @click="searching=!searching">Search</button>
+        <!-- RENAME -->
+        <button class="chat-menu-btn" @click="showRenameForm = !showRenameForm">
+          Rename
+        </button>
 
-    <form
-      v-if="showRenameForm"
-      @submit.prevent="renameGroup($graffitiSession.value)"
-      class="chat-menu-form"
-    >
-      <input v-model="renameText" placeholder="New chat name" />
-      <input type="submit" value="Rename" />
-    </form>
-
-    <!-- PARTICIPANTS -->
-    <button
-      class="chat-menu-btn"
-      @click="showParticipantList = !showParticipantList"
-    >
-      Participants
-    </button>
-    <graffiti-discover
-      v-slot="{ objects: participantObjects, isInitialPollingParticipants }"
-      :channels="[currentChatChannel]"
-      :schema="participantsSchema"
-    >
-      <p v-if="isInitialPollingParticipants">Loading...</p>
-      <ul class="participant-list" v-if="showParticipantList">
-        <li
-          v-for="participant in getParticipantList(chatObjects[0], participantObjects)"
-          :key="participant"
+        <form
+          v-if="showRenameForm"
+          @submit.prevent="renameGroup($graffitiSession.value)"
+          class="chat-menu-form"
         >
-          {{ participant }}
-        </li>
-      </ul>
-    </graffiti-discover>
+          <input v-model="renameText" placeholder="New chat name" />
+          <input type="submit" value="Rename" />
+        </form>
 
-    <!-- INVITE -->
+        <!-- PARTICIPANTS -->
+        <button
+          class="chat-menu-btn"
+          @click="showParticipantList = !showParticipantList"
+        >
+          Participants
+        </button>
+        <graffiti-discover
+          v-slot="{ objects: participantObjects, isInitialPollingParticipants }"
+          :channels="[currentChatChannel]"
+          :schema="participantsSchema"
+        >
+          <p v-if="isInitialPollingParticipants">Loading...</p>
+          <ul class="participant-list" v-if="showParticipantList">
+            <li
+              v-for="participant in getParticipantList(groupChatObjects[0], participantObjects)"
+              :key="participant"
+            >
+              {{ participant }}
+            </li>
+          </ul>
+        </graffiti-discover>
 
-    <button class="chat-menu-btn" @click="showInviteForm = !showInviteForm">
-      Invite User
-    </button>
+        <!-- INVITE -->
 
-    <form
-      v-if="showInviteForm"
-      @submit.prevent="inviteUser($graffitiSession.value, inviteeActor)"
-      class="chat-menu-form"
-    >
-      <input v-model="inviteeActor" placeholder="Actor ID to invite" />
-      <input type="submit" value="Invite" />
-    </form>
+        <button class="chat-menu-btn" @click="showInviteForm = !showInviteForm">
+          Invite User
+        </button>
 
-    <!-- LEAVE -->
-    <button class="chat-menu-btn" @click="leaveChat($graffitiSession.value)">
-      Leave
-    </button>
+        <form
+          v-if="showInviteForm"
+          @submit.prevent="inviteUser($graffitiSession.value, inviteeActor)"
+          class="chat-menu-form"
+        >
+          <input v-model="inviteeActor" placeholder="Actor ID to invite" />
+          <input type="submit" value="Invite" />
+        </form>
+
+        <!-- LEAVE -->
+        <button
+          class="chat-menu-btn"
+          @click="leaveChat($graffitiSession.value)"
+        >
+          Leave
+        </button>
+      </div>
+      <div v-else class="search-panel">
+        <div class="search-box">
+          <label for="from-date">From:</label>
+          <input id="from-date" type="date" />
+
+          <div class="time-row">
+            <input type="number" placeholder="00" min="1" max="12" />
+            :
+            <input type="number" placeholder="00" min="0" max="59" />
+            <select>
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="search-box">
+          <label for="to-date">Until:</label>
+          <input id="to-date" type="date" />
+
+          <div class="time-row">
+            <input type="number" placeholder="04" min="1" max="12" />
+            :
+            <input type="number" placeholder="27" min="0" max="59" />
+            <select>
+              <option>AM</option>
+              <option selected>PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="search-box">
+          <label>Go to:</label>
+          <div class="radio-group">
+            <label><input type="radio" name="go" /> earliest date</label>
+            <label><input type="radio" name="go" /> latest date</label>
+          </div>
+        </div>
+
+        <div class="search-box">
+          <label for="keyword">Keyword:</label>
+          <div class="keyword-box">
+            <input id="keyword" type="text" placeholder="Aa" />
+            <span class="search-icon">🔍</span>
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" /> similar words
+          </label>
+        </div>
+        <button class="search-btn">S e a r c h</button>
+      </div>
+    </div>
   </graffiti-discover>
-</div>
+</graffiti-discover>

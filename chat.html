@@ -14,8 +14,8 @@
       <div v-else class="messages" :class="{ hideMessagesOnMobile: showMenu }">
         <div class="chat-header">
           <h2>
-            {{ renameObjects .filter(r => r.value.describes === channel)
-            .sort((a, b) => b.lastModified - a.lastModified)[0]?.value.name ||
+            {{ renameObjects.sort((a, b) => b.lastModified -
+            a.lastModified)[0]?.value.name ||
             groupChatObjects[0]?.value.object.name || "no name"}}
           </h2>
           <button class="menu-btn" @click="this.showMenu = !this.showMenu">

@@ -7,7 +7,7 @@ import { getParticipantList } from "./utils.js";
 
 export async function ChatMenu() {
   return {
-    props: ["currentChatChannel"],
+    props: ["currentChatChannel", "groupChatObjects"],
     data() {
       return {
         renameText: "",
@@ -19,6 +19,7 @@ export async function ChatMenu() {
         groupChatSchema: groupChatSchema,
         renameSchema: renameSchema,
         participantsSchema: participantsSchema,
+        searching: false,
       };
     },
     computed: {
