@@ -60,7 +60,6 @@ export async function CreateChat() {
           {
             value: value,
             channels: channels,
-            allowed: participants,
           },
           session
         );

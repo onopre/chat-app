@@ -2,13 +2,15 @@ import { defineAsyncComponent } from "vue";
 import { Chat } from "./chat.js";
 import { groupChatSchema } from "./schemas.js";
 import { renameSchema } from "./schemas.js";
+import { participantsSchema } from "./schemas.js";
+import { getParticipantList } from "./utils.js";
 
 export async function ChatMenu() {
   return {
     props: ["currentChatChannel"],
     data() {
       return {
-        currentChatName: "",
+        renameText: "",
         inviteeActor: "",
         showRenameForm: false,
         showInviteForm: false,
@@ -16,9 +18,16 @@ export async function ChatMenu() {
         channels: ["designftw"],
         groupChatSchema: groupChatSchema,
         renameSchema: renameSchema,
+        participantsSchema: participantsSchema,
       };
     },
+    computed: {
+      actor() {
+        return this.$graffitiSession.value.actor;
+      },
+    },
     methods: {
+      getParticipantList,
       async renameGroup(session) {
         if (!this.renameText || !this.currentChatChannel) return;
 
@@ -33,57 +42,20 @@ export async function ChatMenu() {
           session
         );
 
-        await this.$graffiti.put(
-          {
-            value: {
-              name: this.renameText,
-              describes: this.currentChatChannel,
-            },
-            channels: this.channels,
-          },
-          session
-        );
-
-        this.currentChatName = this.renameText;
         this.renameText = "";
         this.showRenameForm = false;
       },
-      async inviteUser(session, participants) {
-        if (!participants || !this.currentChatChannel) return;
-
-        if (!participants.includes(this.inviteeActor)) {
-          participants.push(this.inviteeActor);
-        }
+      async inviteUser(session, inviteeActor) {
+        if (!inviteeActor || !this.currentChatChannel) return;
         await this.$graffiti.put(
           {
             value: {
               activity: "Add",
-              object: {
-                type: "Group Chat",
-                name: this.currentChatName,
-                channel: this.currentChatChannel,
-                participants: participants,
-              },
-            },
-            channels: this.channels,
-            allowed: participants,
-          },
-          session
-        );
-
-        await this.$graffiti.put(
-          {
-            value: {
-              activity: "Add",
-              object: {
-                type: "Group Chat",
-                name: this.currentChatName,
-                channel: this.currentChatChannel,
-                participants: participants,
-              },
+              actor: inviteeActor,
+              chatChannel: this.currentChatChannel,
+              timestamp: Date.now(),
             },
             channels: [this.currentChatChannel],
-            allowed: participants,
           },
           session
         );
@@ -91,47 +63,21 @@ export async function ChatMenu() {
         this.inviteeActor = "";
       },
 
-      async leaveChat(session, participants) {
-        if (!participants || !this.currentChatChannel) return;
-
-        participants = participants.filter(
-          (p) => p !== this.$graffitiSession.value.actor
-        );
+      async leaveChat(session) {
+        if (!this.currentChatChannel) return;
         await this.$graffiti.put(
           {
             value: {
-              activity: "Add",
-              object: {
-                type: "Group Chat",
-                name: this.currentChatName,
-                channel: this.currentChatChannel,
-                participants: participants,
-              },
-            },
-            channels: this.channels,
-            allowed: participants,
-          },
-          session
-        );
-
-        await this.$graffiti.put(
-          {
-            value: {
-              activity: "Add",
-              object: {
-                type: "Group Chat",
-                name: this.currentChatName,
-                channel: this.currentChatChannel,
-                participants: participants,
-              },
+              activity: "Leave",
+              actor: this.actor,
+              chatChannel: this.currentChatChannel,
+              timestamp: Date.now(),
             },
             channels: [this.currentChatChannel],
-            allowed: participants,
           },
           session
         );
         this.showInviteForm = false;
-        this.inviteeActor = "";
       },
 
       async deleteChat(session) {

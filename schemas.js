@@ -30,11 +30,17 @@ export const groupChatSchema = {
             channel: { type: "string" },
             participants: {
               type: "array",
+              minItems: 1,
               items: { type: "string" },
             },
           },
         },
       },
+    },
+    channels: {
+      type: "array",
+      minItems: 2,
+      items: { type: "string" },
     },
   },
 };
@@ -58,6 +64,20 @@ export const messageSchema = {
       properties: {
         content: { type: "string" },
         published: { type: "number" },
+      },
+    },
+  },
+};
+
+export const participantsSchema = {
+  properties: {
+    value: {
+      required: ["activity", "actor", "chatChannel", "timestamp"],
+      properties: {
+        activity: { type: "string", enum: ["Add", "Leave"] },
+        actor: { type: "string" },
+        chatChannel: { type: "string" },
+        timestamp: { type: "number" },
       },
     },
   },

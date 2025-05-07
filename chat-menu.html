@@ -1,68 +1,65 @@
 <div class="chat-menu-wrapper">
   <graffiti-discover
     v-slot="{ objects: chatObjects }"
-    :channels="['designftw']"
+    :channels="[currentChatChannel]"
     :schema="groupChatSchema"
   >
-    <template
-      v-if="chatObjects.filter(c =>
-                    c.value.object.channel === currentChatChannel).sort((a, b) =>
-                    b.lastModified - a.lastModified) [0]?.value.object.participants.includes($graffitiSession.value.actor)"
+    <button disabled class="search">Search (TBD)</button>
+    <!-- RENAME -->
+    <button class="chat-menu-btn" @click="showRenameForm = !showRenameForm">
+      Rename
+    </button>
+
+    <form
+      v-if="showRenameForm"
+      @submit.prevent="renameGroup($graffitiSession.value)"
+      class="chat-menu-form"
     >
-      <button disabled class="search">Search (TBD)</button>
-      <!-- RENAME -->
-      <button class="rename-btn" @click="showRenameForm = !showRenameForm">
-        Rename
-      </button>
+      <input v-model="renameText" placeholder="New chat name" />
+      <input type="submit" value="Rename" />
+    </form>
 
-      <form
-        v-if="showRenameForm"
-        @submit.prevent="renameGroup($graffitiSession.value)"
-        class="rename-chat-form"
-      >
-        <input v-model="renameText" placeholder="New chat name" />
-        <input type="submit" value="Rename" />
-      </form>
-
-      <!-- PARTICIPANTS -->
-      <button
-        class="rename-btn"
-        @click="showParticipantList = !showParticipantList"
-      >
-        Participants
-      </button>
+    <!-- PARTICIPANTS -->
+    <button
+      class="chat-menu-btn"
+      @click="showParticipantList = !showParticipantList"
+    >
+      Participants
+    </button>
+    <graffiti-discover
+      v-slot="{ objects: participantObjects, isInitialPollingParticipants }"
+      :channels="[currentChatChannel]"
+      :schema="participantsSchema"
+    >
+      <p v-if="isInitialPollingParticipants">Loading...</p>
       <ul class="participant-list" v-if="showParticipantList">
         <li
-          v-for="participant in  chatObjects.filter(c =>
-                    c.value.object.channel === currentChatChannel).sort((a, b) =>
-                    b.lastModified - a.lastModified) [0]?.value.object.participants"
+          v-for="participant in getParticipantList(chatObjects[0], participantObjects)"
           :key="participant"
         >
           {{ participant }}
         </li>
       </ul>
+    </graffiti-discover>
 
-      <!-- INVITE -->
+    <!-- INVITE -->
 
-      <button class="rename-btn" @click="showInviteForm = !showInviteForm">
-        Invite User
-      </button>
+    <button class="chat-menu-btn" @click="showInviteForm = !showInviteForm">
+      Invite User
+    </button>
 
-      <form
-        v-if="showInviteForm"
-        @submit.prevent="inviteUser($graffitiSession.value, chatObjects.filter(c =>
-                  c.value.object.channel === currentChatChannel).sort((a, b) =>
-                  b.lastModified - a.lastModified) [0]?.value.object.participants)"
-        class="rename-chat-form"
-      >
-        <input v-model="inviteeActor" placeholder="Actor ID to invite" />
-        <input type="submit" value="Invite" />
-      </form>
+    <form
+      v-if="showInviteForm"
+      @submit.prevent="inviteUser($graffitiSession.value, inviteeActor)"
+      class="chat-menu-form"
+    >
+      <input v-model="inviteeActor" placeholder="Actor ID to invite" />
+      <input type="submit" value="Invite" />
+    </form>
 
-      <!-- LEAVE -->
-      <button class="rename-btn" @click="leaveChat($graffitiSession.value)">
-        Leave
-      </button>
-    </template>
+    <!-- LEAVE -->
+    <button class="chat-menu-btn" @click="leaveChat($graffitiSession.value)">
+      Leave
+    </button>
   </graffiti-discover>
 </div>

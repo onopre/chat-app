@@ -15,28 +15,41 @@
   >
     <ul class="chat-list">
       <li v-if="isInitialPolling">Loading...</li>
-      <li
-        v-for="object of groupChatObjects.sort((a, b) => b.lastModified - a.lastModified).filter(c => c.value.object.participants.includes($graffitiSession.value.actor))"
+      <template
+        v-for="object of groupChatObjects.sort((a, b) => b.lastModified - a.lastModified)"
         :key="object.url"
       >
+        <!--{{object}}-->
         <graffiti-discover
-          v-slot="{ objects: renameObjects, isRenameInitialPolling }"
+          v-slot="{ objects: participantObjects, isInitialPollingParticipants }"
           :channels="[object.value.object.channel]"
-          :schema="renameSchema"
+          :schema="participantsSchema"
         >
-          <p v-if="isRenameInitialPolling">Loading...</p>
-          <template v-else>
-            <router-link
-              :class="{ 'active-chat': object.value.object.channel === currentChatChannel }"
-              :to="`/chat/${object.value.object.channel}`"
+          <graffiti-discover
+            v-slot="{ objects: renameObjects, isRenameInitialPolling }"
+            :channels="[object.value.object.channel]"
+            :schema="renameSchema"
+          >
+            <template
+              v-if="getParticipantList(object, participantObjects).includes($graffitiSession.value.actor)"
             >
-              {{renameObjects.sort((a, b) => b.lastModified -
-              a.lastModified)[0]?.value.name || object.value.object.name }}
-              <!--{{object.value.object.participants}}-->
-            </router-link>
-          </template>
+              <p v-if="isRenameInitialPolling || isInitialPollingParticipants">
+                Loading...
+              </p>
+              <template v-else>
+                <router-link
+                  :class="{ 'active-chat': object.value.object.channel === currentChatChannel }"
+                  :to="`/chat/${object.value.object.channel}`"
+                >
+                  {{renameObjects.sort((a, b) => b.lastModified -
+                  a.lastModified)[0]?.value.name || object.value.object.name }}
+                  <!--{{object.value.object.participants}}-->
+                </router-link>
+              </template>
+            </template>
+          </graffiti-discover>
         </graffiti-discover>
-      </li>
+      </template>
     </ul>
   </graffiti-discover>
 </div>
