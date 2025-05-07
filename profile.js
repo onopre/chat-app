@@ -74,7 +74,7 @@ export async function Profile() {
           name: this.actor,
           pronouns: "",
           bio: "",
-          icon: "/user.svg",
+          icon: "./user.svg",
           describes: this.actor,
           published: Date.now(),
           generator: "https://onopre.github.io/chat-app/",
