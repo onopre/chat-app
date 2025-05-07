@@ -15,7 +15,6 @@ export async function CreateChat() {
         participants: [],
         participantQuery: "",
         channels: ["designftw"],
-        selectedChannel: null,
         currentChatName: "",
       };
     },
@@ -39,40 +38,36 @@ export async function CreateChat() {
         this.creatingChat = true;
 
         const channel = crypto.randomUUID();
-        //const participants = this.participants
-        //  .split(",")
-        //  .map((a) => a.trim())
-        //  .filter((a) => a.length > 0);
-        //if (!participants.includes(this.$graffitiSession.value.actor)) {
-        //  participants.push(this.$graffitiSession.value.actor);
-        //}
         const participants = [...this.participants];
+        //console.log("participants", participants);
         if (!participants.includes(this.$graffitiSession.value.actor)) {
           participants.push(this.$graffitiSession.value.actor);
         }
+        //console.log(participants);
         const channels = [...this.channels, channel];
-
-        const url = await this.$graffiti.put(
+        const value = {
+          activity: "Create",
+          object: {
+            type: "Group Chat",
+            name: this.chatName,
+            channel: channel,
+            participants: participants,
+          },
+        };
+        //console.log("value", value);
+        //console.log("channels", channels);
+        const object = await this.$graffiti.put(
           {
-            value: {
-              activity: "Create",
-              object: {
-                type: "Group Chat",
-                name: this.chatName,
-                channel: channel,
-                participants: participants,
-              },
-            },
+            value: value,
             channels: channels,
             allowed: participants,
           },
           session
         );
-        console.log(url);
+        //console.log("object", object);
         this.creatingChat = false;
         this.chatName = "";
-        this.selectedChannel = channel;
-        this.participants = "";
+        this.participants = [];
       },
       addFriend() {
         const name = this.participantQuery.trim();

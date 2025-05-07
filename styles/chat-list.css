@@ -52,101 +52,20 @@
 .chats-header {
   flex-shrink: 0;
   background-color: #c8bfff;
-  padding: 1em;
+  padding: 0.2em 1em;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.chat-header {
-  padding: 1em;
-  background-color: #c8bfff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.chat-menu-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 250px;
-  background-color: #eee6ff;
-  border-left: 1px solid #ccc;
-  padding: 1em;
-  overflow-y: auto;
-}
-.rename-chat-form {
-  margin-bottom: 1em;
-}
-
-.create-chat-form {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.create-chat-form fieldset {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.add-btn {
+  background-color: transparent;
   border: none;
-  padding: 1rem;
-  box-sizing: border-box;
-}
-.creating-chat-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.creating-chat-body {
-  display: flex;
-  align-items: left;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 0.5rem;
-}
-
-.create-chat-form input[type="text"] {
-  flex: 1;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.create-chat-form input[type="submit"] {
-  background-color: #5137f3;
-  color: white;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
+  font-size: 1.5em;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  width: auto;
-  white-space: nowrap;
+  color: #6a5acd;
+  transition: transform 0.2s;
 }
-
-.create-chat-form input[type="submit"]:hover {
-  background-color: #3e29c9;
-}
-
-.create-chat-form input[type="submit"]:disabled {
-  background-color: #999;
-  cursor: not-allowed;
-}
-
-.chats-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #c8bfff;
-  padding: 1em;
-}
-.chat-container {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-  font-family: sans-serif;
-  background-color: #f3f0ff;
+.add-btn:hover {
+  transform: scale(1.2);
+  background-color: #e2dcf8;
 }

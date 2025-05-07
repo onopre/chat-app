@@ -1,88 +1,59 @@
 <div class="chat-container">
   <ChatList :currentChatChannel="channel" class="optionalChatList" />
-  <section class="messages">
+  <graffiti-discover
+    v-slot="{ objects: groupChatObjects, isInitialPolling }"
+    :channels="[channel]"
+    :schema="groupChatSchema"
+  >
     <graffiti-discover
-      v-slot="{ objects: renameObjects }"
+      v-slot="{ objects: renameObjects, isRenameInitialPolling }"
       :channels="[channel]"
       :schema="renameSchema"
     >
-      <graffiti-discover
-        v-slot="{ objects: groupChatObjects, isInitialPolling }"
-        :channels="[channel]"
-        :schema="groupChatSchema"
-      >
-        <div v-if="isInitialPolling">Loading...</div>
-        <div v-else>
-          <div class="chat-header">
-            <h2>
-              {{ renameObjects .filter(r => r.value.describes === channel)
-              .sort((a, b) => b.lastModified - a.lastModified)[0]?.value.name ||
-              groupChatObjects[0]?.value.object.name || "no name"}}
-            </h2>
-            <button class="menu-btn" @click="this.showMenu = !this.showMenu">
-              Menu
-            </button>
-          </div>
-          <div class="message-body">
-            <graffiti-discover
-              v-slot="{ objects: messageObjects, isInitialPolling }"
-              :channels="[channel]"
-              :schema="messageSchema"
-            >
-              <ul class="message-list">
-                <li v-if="isInitialPolling">Loading...</li>
-                <li
-                  v-for="object of messageObjects.sort((a, b) => a.value.published - b.value.published)"
-                  :key="object.url"
-                >
-                  <message :object="object" />
-                  <!--<div v-if="object.actor===$graffitiSession.value.actor">
-                    <div v-if="object.value.editing">
-                      <form
-                        @submit.prevent="updateMessage(object, $graffitiSession.value)"
-                      >
-                        <input
-                          type="text"
-                          v-model="object.value.editContent"
-                          ref="messageInput"
-                        />
-                        <input type="submit" value="Update" />
-                      </form>
-                    </div>
-                    <div v-else>
-                      <strong> {{ object.actor }}(you)</strong>:
-                      {{object.value.content }}
-                      <button @click="startEditing(object)">Edit</button>
-                      <button @click="deleteMessage(object)">Delete</button>
-                    </div>
-                  </div>
-
-                  <div v-else>
-                    <strong>{{ object.actor }}</strong>: {{ object.value.content
-                    }}
-                  </div>-->
-                </li>
-              </ul>
-            </graffiti-discover>
-          </div>
-          <form
-            @submit.prevent="sendMessage($graffitiSession.value)"
-            class="message-form"
-          >
-            <fieldset :disabled="sending">
-              <input
-                type="text"
-                v-model="myMessage"
-                placeholder="Message"
-                ref="messageInput"
-                v-focus
-              />
-              <input type="submit" :value="sending? 'Sending...' : 'Send'" />
-            </fieldset>
-          </form>
+      <div v-if="isInitialPolling || isRenameInitialPolling">Loading...</div>
+      <div v-else class="messages">
+        <div class="chat-header">
+          <h2>
+            {{ renameObjects .filter(r => r.value.describes === channel)
+            .sort((a, b) => b.lastModified - a.lastModified)[0]?.value.name ||
+            groupChatObjects[0]?.value.object.name || "no name"}}
+          </h2>
+          <button class="menu-btn" @click="this.showMenu = !this.showMenu">
+            Menu
+          </button>
         </div>
-      </graffiti-discover>
+        <graffiti-discover
+          v-slot="{ objects: messageObjects, isInitialPolling }"
+          :channels="[channel]"
+          :schema="messageSchema"
+        >
+          <ul class="message-list">
+            <li v-if="isInitialPolling">Loading...</li>
+            <li
+              v-for="object of messageObjects.sort((a, b) => a.value.published - b.value.published)"
+              :key="object.url"
+            >
+              <message :object="object" />
+            </li>
+          </ul>
+        </graffiti-discover>
+        <form
+          @submit.prevent="sendMessage($graffitiSession.value)"
+          class="message-form"
+        >
+          <fieldset :disabled="sending">
+            <input
+              type="text"
+              v-model="myMessage"
+              placeholder="Message"
+              ref="messageInput"
+              v-focus
+            />
+            <input type="submit" :value="sending? 'Sending...' : 'Send'" />
+          </fieldset>
+        </form>
+      </div>
     </graffiti-discover>
-  </section>
+  </graffiti-discover>
   <chat-menu v-if="showMenu" :currentChatChannel="channel" />
 </div>

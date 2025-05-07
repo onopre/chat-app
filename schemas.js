@@ -15,3 +15,50 @@ export const profileSchema = {
     },
   },
 };
+
+export const groupChatSchema = {
+  properties: {
+    value: {
+      required: ["object", "activity"],
+      properties: {
+        activity: { const: "Create" },
+        object: {
+          required: ["type", "name", "channel", "participants"],
+          properties: {
+            type: { const: "Group Chat" },
+            name: { type: "string", minLength: 1 },
+            channel: { type: "string" },
+            participants: {
+              type: "array",
+              items: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
+export const renameSchema = {
+  properties: {
+    value: {
+      required: ["name", "describes"],
+      properties: {
+        name: { type: "string" },
+        describes: { type: "string" },
+      },
+    },
+  },
+};
+
+export const messageSchema = {
+  properties: {
+    value: {
+      required: ["content", "published"],
+      properties: {
+        content: { type: "string" },
+        published: { type: "number" },
+      },
+    },
+  },
+};

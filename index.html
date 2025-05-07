@@ -16,21 +16,37 @@
       }
     </script>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles/login.css" />
     <link rel="stylesheet" href="styles/profile.css" />
     <link rel="stylesheet" href="styles/header.css" />
     <link rel="stylesheet" href="styles/friends.css" />
+    <link rel="stylesheet" href="styles/chat.css" />
+    <link rel="stylesheet" href="styles/create-chat.css" />
     <link rel="stylesheet" href="styles/chat-list.css" />
+    <link rel="stylesheet" href="styles/message.css" />
+    <link rel="stylesheet" href="styles/message-actions.css" />
   </head>
   <body>
     <div id="app">
       <header class="app-header">
         <h1><router-link :to="`/`">DesignFTW Chatroom</router-link></h1>
-        <h2 v-if="$graffitiSession.value">
-          <router-link
-            :to="`/profile/?username=${$graffitiSession.value.actor}`"
-            >{{$graffitiSession.value.actor}}</router-link
-          >
-        </h2>
+        <div class="header-user" v-if="$graffitiSession.value">
+          <h2>
+            <router-link
+              :to="`/profile/?username=${$graffitiSession.value.actor}`"
+            >
+              {{$graffitiSession.value.actor}}
+            </router-link>
+          </h2>
+          <router-link :to="`/`">
+            <button
+              class="logout-button"
+              @click="$graffiti.logout($graffitiSession.value)"
+            >
+              Log Out
+            </button>
+          </router-link>
+        </div>
       </header>
       <main>
         <router-view v-if="$graffitiSession.value"></router-view>

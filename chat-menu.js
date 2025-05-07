@@ -1,33 +1,7 @@
 import { defineAsyncComponent } from "vue";
 import { Chat } from "./chat.js";
-
-const groupChatSchema = {
-  properties: {
-    value: {
-      required: ["object"],
-      properties: {
-        object: {
-          required: ["name", "channel", "participants"],
-          properties: {
-            name: { type: "string" },
-            channel: { type: "string" },
-            participants: {
-              type: "array",
-              items: { type: "string" },
-            },
-          },
-        },
-      },
-    },
-  },
-};
-
-const renameSchema = {
-  properties: {
-    name: { type: "string" },
-    describes: { type: "string" },
-  },
-};
+import { groupChatSchema } from "./schemas.js";
+import { renameSchema } from "./schemas.js";
 
 export async function ChatMenu() {
   return {
@@ -158,6 +132,12 @@ export async function ChatMenu() {
         );
         this.showInviteForm = false;
         this.inviteeActor = "";
+      },
+
+      async deleteChat(session) {
+        if (!this.currentChatChannel) return;
+
+        await this.$graffiti.delete(session);
       },
     },
 

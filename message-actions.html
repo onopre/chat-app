@@ -2,6 +2,8 @@
   <button class="actions-toggle" @click="toggleMenu">⋮</button>
   <div v-if="showMenu" class="actions-popup">
     <button @click="onEdit(); showMenu = false">Edit</button>
-    <button @click="onDelete(); showMenu = false">Delete</button>
+    <button class="delete-action" @click="onDelete(); showMenu = false">
+      Delete
+    </button>
   </div>
 </div>
