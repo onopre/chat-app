@@ -9,7 +9,6 @@ import { ChatList } from "./chat-list.js";
 import { Chat } from "./chat.js";
 import { CreateChat } from "./create-chat.js";
 import { Profile } from "./profile.js";
-import { profileSchema } from "./schemas.js";
 
 const router = createRouter({
   history: createWebHashHistory(),
