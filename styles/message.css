@@ -47,3 +47,14 @@
   color: #555;
   margin-bottom: 0.25rem;
 }
+
+.message-timestamp {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
+  color: #777;
+  text-align: right;
+}
+.message-bubble-other .message-timestamp {
+  text-align: left;
+}

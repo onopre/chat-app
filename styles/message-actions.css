@@ -32,3 +32,19 @@
 .delete-action {
   color: red;
 }
+
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  transform-origin: top right;
+}
+.fade-scale-enter-from,
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.fade-scale-enter-to,
+.fade-scale-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}

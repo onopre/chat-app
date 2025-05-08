@@ -22,11 +22,19 @@
       :onEdit="() => startEditing(object)"
       :onDelete="() => deleteMessage(object)"
     />
+    <span class="message-timestamp">
+      {{ new Date(object.value.published).toLocaleString() }}
+    </span>
   </div>
 </div>
 <div v-else class="other-wrapper">
   <div class="message-metadata">
     <strong>{{ object.actor }}</strong>
   </div>
-  <div class="message-bubble-other">{{ object.value.content }}</div>
+  <div class="message-bubble-other">
+    {{ object.value.content }}
+    <span class="message-timestamp">
+      {{ new Date(object.value.published).toLocaleString() }}
+    </span>
+  </div>
 </div>

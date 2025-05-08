@@ -38,7 +38,13 @@ export async function Chat() {
             activity: "Create",
             value: {
               content: this.myMessage,
-              published: Date.now(),
+              //published: Date.now(),
+              published: new Date(new Date().setMonth(2, 4)).setHours(
+                new Date().getHours(),
+                new Date().getMinutes(),
+                new Date().getSeconds(),
+                new Date().getMilliseconds()
+              ),
               editing: false,
               editContent: "",
             },

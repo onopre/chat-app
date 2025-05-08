@@ -1,9 +1,11 @@
 <div class="message-actions-container">
   <button class="actions-toggle" @click="toggleMenu">⋮</button>
-  <div v-if="showMenu" class="actions-popup">
-    <button @click="onEdit(); showMenu = false">Edit</button>
-    <button class="delete-action" @click="onDelete(); showMenu = false">
-      Delete
-    </button>
-  </div>
+  <transition name="fade-scale">
+    <div v-if="showMenu" class="actions-popup">
+      <button @click="onEdit(); showMenu = false">Edit</button>
+      <button class="delete-action" @click="onDelete(); showMenu = false">
+        Delete
+      </button>
+    </div>
+  </transition>
 </div>
