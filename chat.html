@@ -18,7 +18,7 @@
             a.lastModified)[0]?.value.name ||
             groupChatObjects[0]?.value.object.name || "no name"}}
           </h2>
-          {{channel}}
+          <!--{{channel}}-->
           <button class="menu-btn" @click="this.showMenu = !this.showMenu">
             Menu
           </button>
@@ -28,7 +28,7 @@
           :channels="[channel]"
           :schema="messageSchema"
         >
-          {{messageObjects}}
+          <!--{{messageObjects}}-->
           <ul class="message-list">
             <li v-if="isInitialPolling">Loading...</li>
             <li

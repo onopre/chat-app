@@ -8,6 +8,7 @@
 }
 .friends {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   flex-grow: 1;
   margin: 0 auto 2rem auto;
