@@ -32,7 +32,7 @@ export async function Chat() {
         if (!this.myMessage || !this.channel) return;
         this.sending = true;
         //await new Promise((resolve) => setTimeout(resolve, 1000));
-        const now = new Date();
+        //const now = new Date();
         await this.$graffiti.put(
           {
             activity: "Create",
