@@ -8,6 +8,8 @@ h2 a {
 .app-header h1,
 .app-header h2 {
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 .app-header {
   display: flex;

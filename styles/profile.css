@@ -24,6 +24,7 @@
   text-align: center;
   color: #5137f3;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 1rem;
@@ -36,6 +37,7 @@
 }
 .profile-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1.5rem;
 }

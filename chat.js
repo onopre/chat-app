@@ -47,7 +47,7 @@ export async function Chat() {
                 now.getMinutes(),
                 now.getSeconds(),
                 now.getMilliseconds()
-              ),
+              ).getTime(),
               editing: false,
               editContent: "",
             },
