@@ -19,7 +19,7 @@
           <button
             @click="friendObjects
                     .filter(f => f.value.target === friend)
-                    .forEach(f => $graffiti.delete(f))"
+                    .forEach(f => $graffiti.delete(f, $graffitiSession.value))"
           >
             Unfriend
           </button>
@@ -46,7 +46,7 @@
           <button
             @click="friendObjects
                     .filter(f => f.value.target === friend)
-                    .forEach(f => $graffiti.delete(f))"
+                    .forEach(f => $graffiti.delete(f, $graffitiSession.value))"
           >
             Cancel
           </button>
