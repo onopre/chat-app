@@ -80,58 +80,106 @@
           Leave
         </button>
       </div>
-      <div v-else class="search-panel">
-        <div class="search-box">
-          <label for="from-date">From:</label>
-          <input id="from-date" type="date" />
+      <form v-else class="search-panel" @submit.prevent="search">
+        <fieldset class="search-fieldset" :disabled="waitForSearch">
+          <!-- FROM -->
+          <div class="search-box">
+            <label for="from-date">From:</label>
+            <input id="from-date" type="date" v-model="fromDate" />
 
-          <div class="time-row">
-            <input type="number" placeholder="00" min="1" max="12" />
-            :
-            <input type="number" placeholder="00" min="0" max="59" />
-            <select>
-              <option>AM</option>
-              <option>PM</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="search-box">
-          <label for="to-date">Until:</label>
-          <input id="to-date" type="date" />
-
-          <div class="time-row">
-            <input type="number" placeholder="11" min="1" max="12" />
-            :
-            <input type="number" placeholder="59" min="0" max="59" />
-            <select>
-              <option>AM</option>
-              <option selected>PM</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="search-box">
-          <label>Go to:</label>
-          <div class="radio-group">
-            <label><input type="radio" name="go" /> earliest date</label>
-            <label><input type="radio" name="go" /> latest date</label>
-          </div>
-        </div>
-
-        <div class="search-box">
-          <label for="keyword">Keyword:</label>
-          <div class="keyword-box">
-            <input id="keyword" type="text" placeholder="Aa" />
-            <span class="search-icon">🔍</span>
+            <div class="time-row">
+              <input
+                type="number"
+                placeholder="00"
+                min="0"
+                max="12"
+                v-model="fromHour"
+              />
+              :
+              <input
+                type="number"
+                placeholder="00"
+                min="0"
+                max="59"
+                v-model="fromMinute"
+              />
+              <select v-model="fromAmPm">
+                <option>AM</option>
+                <option>PM</option>
+              </select>
+            </div>
           </div>
 
-          <label class="checkbox-row">
-            <input type="checkbox" /> similar words
-          </label>
-        </div>
-        <button class="search-btn">S e a r c h</button>
-      </div>
+          <!-- TO -->
+          <div class="search-box">
+            <label for="to-date">Until:</label>
+            <input id="to-date" type="date" v-model="toDate" />
+
+            <div class="time-row">
+              <input
+                type="number"
+                placeholder="11"
+                min="1"
+                max="12"
+                v-model="toHour"
+              />
+              :
+              <input
+                type="number"
+                placeholder="59"
+                min="0"
+                max="59"
+                v-model="toMinute"
+              />
+              <select v-model="toAmPm">
+                <option>AM</option>
+                <option>PM</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- GO TO -->
+          <div class="search-box">
+            <label>Go to:</label>
+            <div class="radio-group">
+              <label>
+                <input type="radio" name="go" value="earliest" v-model="goTo" />
+                earliest date
+              </label>
+              <label>
+                <input type="radio" name="go" value="latest" v-model="goTo" />
+                latest date
+              </label>
+            </div>
+          </div>
+
+          <!-- KEYWORD -->
+          <div class="search-box">
+            <label for="keyword">Keyword:</label>
+            <div class="keyword-box">
+              <input
+                id="keyword"
+                type="text"
+                placeholder="Aa"
+                v-model="keyword"
+              />
+              <span class="search-icon">🔍</span>
+            </div>
+
+            <label class="checkbox-row">
+              <input type="checkbox" v-model="similarWords" />
+              similar words
+            </label>
+          </div>
+
+          <!-- SEARCH BUTTON -->
+          <input
+            class="search-btn"
+            type="submit"
+            :value="waitForSearch? 'Searching...' : 'S e a r c h'"
+          />
+      </form>
+      
     </div>
   </graffiti-discover>
 </graffiti-discover>

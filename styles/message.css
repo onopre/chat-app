@@ -58,3 +58,33 @@
 .message-bubble-other .message-timestamp {
   text-align: left;
 }
+
+/*.highlighted {
+  animation: highlight-flash 2s ease-out;
+  background-color: #5137f3;
+  border-radius: 4px;
+}
+
+@keyframes highlight-flash {
+  0% {
+    background-color: #5137f3;
+  }
+  100% {
+    background-color: transparent;
+  }
+}*/
+
+.highlighted {
+  animation: highlight-fade 0.5s ease-out;
+  background-color: #c5b4ff;
+  border-radius: 6px;
+}
+
+@keyframes highlight-fade {
+  0% {
+    background-color: #e2d7ff;
+  }
+  100% {
+    background-color: #c5b4ff;
+  }
+}

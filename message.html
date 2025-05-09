@@ -1,6 +1,7 @@
 <div
   v-if="object.actor === $graffitiSession.value.actor"
   class="message-bubble-you"
+  :id="'message-' + object.url"
 >
   <div v-if="object.value.editing">
     <form
@@ -31,7 +32,7 @@
   <div class="message-metadata">
     <strong>{{ object.actor }}</strong>
   </div>
-  <div class="message-bubble-other">
+  <div class="message-bubble-other" :id="'message-' + object.url">
     {{ object.value.content }}
     <span class="message-timestamp">
       {{ new Date(object.value.published).toLocaleString() }}
