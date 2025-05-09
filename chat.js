@@ -38,16 +38,16 @@ export async function Chat() {
             activity: "Create",
             value: {
               content: this.myMessage,
-              //published: Date.now(),
-              published: new Date(
-                now.getFullYear(),
-                2, // March
-                3,
-                19,
-                now.getMinutes(),
-                now.getSeconds(),
-                now.getMilliseconds()
-              ).getTime(),
+              published: Date.now(),
+              //published: new Date(
+              //  now.getFullYear(),
+              //  2, // March
+              //  3,
+              //  19,
+              //  now.getMinutes(),
+              //  now.getSeconds(),
+              //  now.getMilliseconds()
+              //).getTime(),
               editing: false,
               editContent: "",
             },
