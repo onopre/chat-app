@@ -18,6 +18,7 @@
             a.lastModified)[0]?.value.name ||
             groupChatObjects[0]?.value.object.name || "no name"}}
           </h2>
+          <!--{{channel}}-->
           <button class="menu-btn" @click="this.showMenu = !this.showMenu">
             Menu
           </button>
@@ -33,6 +34,7 @@
               v-for="object of messageObjects.sort((a, b) => a.value.published - b.value.published)"
               :key="object.url"
             >
+              <!--{{object}}-->
               <message :object="object" />
             </li>
           </ul>

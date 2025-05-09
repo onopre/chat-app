@@ -1,5 +1,5 @@
 <div v-if="username === this.$graffitiSession.value.actor" class="profile-view">
-  <aritcle class="friends">
+  <article class="friends">
     <form @submit.prevent="addFriend(friendActor, $graffitiSession.value)">
       <label for="friendActor"> Choose a friend to add </label>
       <input
@@ -9,7 +9,7 @@
       />
       <input type="submit" value="Add Friend" />
     </form>
-  </aritcle>
+  </article>
   <article class="profile-friends">
     <div class="friends">
       <h2>My Friends</h2>

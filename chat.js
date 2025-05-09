@@ -32,18 +32,21 @@ export async function Chat() {
         if (!this.myMessage || !this.channel) return;
         this.sending = true;
         //await new Promise((resolve) => setTimeout(resolve, 1000));
-
+        const now = new Date();
         await this.$graffiti.put(
           {
             activity: "Create",
             value: {
               content: this.myMessage,
               //published: Date.now(),
-              published: new Date(new Date().setMonth(2, 4)).setHours(
-                new Date().getHours(),
-                new Date().getMinutes(),
-                new Date().getSeconds(),
-                new Date().getMilliseconds()
+              published: new Date(
+                now.getFullYear(),
+                1, // February (month is 0-indexed)
+                17,
+                10,
+                now.getMinutes(),
+                now.getSeconds(),
+                now.getMilliseconds()
               ),
               editing: false,
               editContent: "",
