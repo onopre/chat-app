@@ -37,10 +37,10 @@ export const groupChatSchema = {
         },
       },
     },
-    channels: {
-      type: "array",
-      minItems: 2,
-    },
+    //channels: {
+    //  type: "array",
+    //  minItems: 2,
+    //},
   },
 };
 
