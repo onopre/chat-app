@@ -65,6 +65,8 @@ export async function ChatMenu() {
         keyword: "",
         similarWords: false,
         waitForSearch: false,
+        searchMessage: "",
+        messageFadingOut: false,
       };
     },
     computed: {
@@ -114,9 +116,24 @@ export async function ChatMenu() {
           messageObjects.sort((a, b) => b.value.published - a.value.published);
         }
         if (messageObjects.length === 0) {
-          console.log("No messages found in this time range");
+          this.searchMessage = "No messages found in this time range.";
+          this.messageFadingOut = false;
+          // Let Vue render with .fade-in
+          this.$nextTick(() => {
+            setTimeout(() => {
+              this.messageFadingOut = true;
+            }, 2000);
+
+            setTimeout(() => {
+              this.searchMessage = "";
+              this.messageFadingOut = false;
+            }, 3000);
+          });
+
+          this.waitForSearch = false;
           return;
         }
+        this.searchMessage = "";
         const targetMsg = messageObjects[0];
         const el = document.getElementById("message-" + targetMsg.url);
         if (el) {

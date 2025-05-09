@@ -186,3 +186,21 @@ input[type="text"] {
 .checkbox-row input {
   pointer-events: none;
 }
+
+.search-message {
+  opacity: 0;
+  transition: opacity 1s ease;
+  color: #5137f3;
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+/* Fade in when shown */
+.search-message.fade-in {
+  opacity: 1;
+}
+
+/* Fade out when dismissing */
+.search-message.fade-out {
+  opacity: 0;
+}
