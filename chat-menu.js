@@ -4,7 +4,7 @@ import { groupChatSchema } from "./schemas.js";
 import { renameSchema } from "./schemas.js";
 import { participantsSchema } from "./schemas.js";
 import { getParticipantList } from "./utils.js";
-
+import { router } from "./index.js";
 export async function ChatMenu() {
   return {
     props: ["currentChatChannel", "groupChatObjects"],
@@ -79,6 +79,10 @@ export async function ChatMenu() {
           session
         );
         this.showInviteForm = false;
+        router.push({
+          name: "chat",
+          params: { channel: channel },
+        });
       },
 
       async deleteChat(session) {
