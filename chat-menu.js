@@ -79,7 +79,7 @@ export async function ChatMenu() {
           session
         );
         this.showInviteForm = false;
-        router.push({ path: "/" });
+        //router.push({ path: "/" });
       },
 
       async deleteChat(session) {

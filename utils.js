@@ -65,7 +65,7 @@ export function getParticipantList(originalObject, participantObjects) {
   participantObjects.sort((a, b) => {
     return a.value.timestamp - b.value.timestamp;
   });
-  const participants = originalObject.value.object.participants;
+  const participants = [...originalObject.value.object.participants];
   for (let i = 0; i < participantObjects.length; i++) {
     const participant = participantObjects[i];
     if (participants.includes(participant.value.actor)) {
