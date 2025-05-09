@@ -81,7 +81,7 @@ export async function ChatMenu() {
         this.showInviteForm = false;
         router.push({
           name: "chat",
-          params: { channel: channel },
+          params: { channel: this.currentChatChannel },
         });
       },
 
