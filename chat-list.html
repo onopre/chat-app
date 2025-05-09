@@ -15,40 +15,46 @@
   >
     <ul class="chat-list">
       <li v-if="isInitialPolling">Loading...</li>
-      <template
-        v-for="object of groupChatObjects.sort((a, b) => b.lastModified - a.lastModified)"
-        :key="object.url"
-      >
-        <!--{{object}}-->
-        <graffiti-discover
-          v-slot="{ objects: participantObjects, isInitialPollingParticipants }"
-          :channels="[object.value.object.channel]"
-          :schema="participantsSchema"
+      <template v-else>
+        <!--{{groupChatObjects}}-->
+        <template
+          v-for="object of groupChatObjects.sort((a, b) => b.lastModified - a.lastModified)"
+          :key="object.url"
         >
+          <!--{{object}}-->
           <graffiti-discover
-            v-slot="{ objects: renameObjects, isRenameInitialPolling }"
+            v-slot="{ objects: participantObjects, isInitialPollingParticipants }"
             :channels="[object.value.object.channel]"
-            :schema="renameSchema"
+            :schema="participantsSchema"
           >
-            <template
-              v-if="getParticipantList(object, participantObjects).includes($graffitiSession.value.actor)"
+            <graffiti-discover
+              v-slot="{ objects: renameObjects, isRenameInitialPolling }"
+              :channels="[object.value.object.channel]"
+              :schema="renameSchema"
             >
-              <p v-if="isRenameInitialPolling || isInitialPollingParticipants">
-                Loading...
-              </p>
-              <template v-else>
-                <router-link
-                  :class="{ 'active-chat': object.value.object.channel === currentChatChannel }"
-                  :to="`/chat/${object.value.object.channel}`"
+              <template
+                v-if="getParticipantList(object, participantObjects).includes($graffitiSession.value.actor)"
+              >
+                <p
+                  v-if="isRenameInitialPolling || isInitialPollingParticipants"
                 >
-                  {{renameObjects.sort((a, b) => b.lastModified -
-                  a.lastModified)[0]?.value.name || object.value.object.name }}
-                  <!--{{object.value.object.participants}}-->
-                </router-link>
+                  Loading...
+                </p>
+                <template v-else>
+                  <router-link
+                    :class="{ 'active-chat': object.value.object.channel === currentChatChannel }"
+                    :to="`/chat/${object.value.object.channel}`"
+                  >
+                    {{renameObjects.sort((a, b) => b.lastModified -
+                    a.lastModified)[0]?.value.name || object.value.object.name
+                    }}
+                    <!--{{object.value.object.participants}}-->
+                  </router-link>
+                </template>
               </template>
-            </template>
+            </graffiti-discover>
           </graffiti-discover>
-        </graffiti-discover>
+        </template>
       </template>
     </ul>
   </graffiti-discover>

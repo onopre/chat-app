@@ -10,12 +10,12 @@ import { Chat } from "./chat.js";
 import { CreateChat } from "./create-chat.js";
 import { Profile } from "./profile.js";
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     // Add your routes here
     { path: "/", component: ChatList },
-    { path: "/chat/:channel", component: Chat, props: true },
+    { path: "/chat/:channel", component: Chat, props: true, name: "chat" },
     { path: "/profile", component: Profile, props: true },
     { path: "/create-chat", component: CreateChat },
   ],

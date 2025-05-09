@@ -1,6 +1,7 @@
 import { defineAsyncComponent } from "vue";
 import { ChatList } from "./chat-list.js";
 import { useFriends } from "./utils.js";
+import { router } from "./index.js";
 
 export async function CreateChat() {
   return {
@@ -54,9 +55,9 @@ export async function CreateChat() {
             participants: participants,
           },
         };
-        //console.log("value", value);
-        //console.log("channels", channels);
-        const object = await this.$graffiti.put(
+        console.log("value", value);
+        console.log("channels", channels);
+        await this.$graffiti.put(
           {
             value: value,
             channels: channels,
@@ -67,6 +68,10 @@ export async function CreateChat() {
         this.creatingChat = false;
         this.chatName = "";
         this.participants = [];
+        router.push({
+          name: "chat",
+          params: { channel: channel },
+        });
       },
       addFriend() {
         const name = this.participantQuery.trim();
