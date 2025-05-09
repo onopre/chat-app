@@ -79,10 +79,7 @@ export async function ChatMenu() {
           session
         );
         this.showInviteForm = false;
-        router.push({
-          name: "chat",
-          params: { channel: this.currentChatChannel },
-        });
+        router.push({ path: "/" });
       },
 
       async deleteChat(session) {
