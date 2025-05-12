@@ -55,8 +55,8 @@ export async function CreateChat() {
             participants: participants,
           },
         };
-        console.log("value", value);
-        console.log("channels", channels);
+        //console.log("value", value);
+        //console.log("channels", channels);
         await this.$graffiti.put(
           {
             value: value,

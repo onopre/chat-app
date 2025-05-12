@@ -53,7 +53,7 @@
         <router-view v-if="$graffitiSession.value"></router-view>
         <div v-else class="login">
           <h2>Please log in to see the chatroom</h2>
-          <button @click="$graffiti.login()">Log In</button>
+          <button @click="login()">Log In</button>
         </div>
       </main>
     </div>

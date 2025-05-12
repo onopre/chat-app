@@ -65,6 +65,7 @@
               >{{ profile.value.name }}
             </router-link>
             <button
+              v-if="!accepted.includes(profile.value.describes) && !friendRequests.includes(profile.value.describes) && !sentRequests.includes(profile.value.describes)"
               @click="addFriend(profile.value.describes, $graffitiSession.value)"
             >
               Add Friend

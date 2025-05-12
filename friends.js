@@ -36,10 +36,11 @@ export async function Friends() {
         for (const profile of sortedProfiles) {
           if (
             profile.value.name &&
-            !seen.has(profile.value.describes) &&
-            !this.accepted.includes(profile.value.describes) &&
-            !this.sentRequests.includes(profile.value.describes) &&
-            !this.friendRequests.includes(profile.value.describes)
+            !seen.has(profile.value.describes)
+            //&&
+            //!this.accepted.includes(profile.value.describes) &&
+            //!this.sentRequests.includes(profile.value.describes) &&
+            //!this.friendRequests.includes(profile.value.describes)
           ) {
             //console.log(profile.value.describes);
             //console.log(this.accepted);
@@ -48,6 +49,7 @@ export async function Friends() {
             uniqueProfiles.push(profile);
           }
         }
+        //console.log("uniqueProfiles", uniqueProfiles);
         return uniqueProfiles;
       },
       addFriend(friendActor, session) {
