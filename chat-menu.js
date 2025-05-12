@@ -260,6 +260,10 @@ export async function ChatMenu() {
 
       async leaveChat(session) {
         if (!this.currentChatChannel) return;
+        const confirmed = window.confirm(
+          "Are you sure you want to leave this chat?"
+        );
+        if (!confirmed) return;
         await this.$graffiti.put(
           {
             value: {
