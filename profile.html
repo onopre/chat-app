@@ -66,11 +66,11 @@
           <form v-else @submit.prevent="updateProfile($graffitiSession.value)">
             <div class="profile-field">
               <label>Name:</label>
-              <input v-model="profileEditable.name" />
+              <input v-model="profileEditable.name" maxlength="20" />
             </div>
             <div class="profile-field">
               <label>Pronouns:</label>
-              <input v-model="profileEditable.pronouns" />
+              <input v-model="profileEditable.pronouns" maxlength="20" />
             </div>
             <div class="profile-field">
               <label>Bio:</label>
@@ -79,6 +79,12 @@
             <div class="profile-field">
               <label>Profile Picture:</label>
               <input v-model="profileEditable.icon" />
+              <img
+                v-if="profileEditable.icon"
+                :src="profileEditable.icon"
+                alt="Icon Preview"
+                style="max-width: 100px; margin-top: 0.5em"
+              />
             </div>
             <button type="submit">Save</button>
           </form>

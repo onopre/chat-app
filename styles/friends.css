@@ -71,6 +71,21 @@
   border-radius: 6px;
   font-size: 1rem;
 }
+.friends a {
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #5137f3;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  margin: 3px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.friends a:hover {
+  color: #3e29c9;
+  background-color: #ddd3f5;
+}
 @media (max-width: 600px) {
   #friendActor {
     min-width: 10em;

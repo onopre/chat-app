@@ -49,6 +49,9 @@ export async function Profile() {
         const latestProfile = profiles.sort(
           (a, b) => b.value.published - a.value.published
         )[0];
+        if (!latestProfile.value.icon) {
+          latestProfile.value.icon = "./user.svg";
+        }
 
         //console.log("latestProfile", latestProfile.value);
         this.profileObject = latestProfile;

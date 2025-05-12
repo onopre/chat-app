@@ -27,9 +27,9 @@ export async function CreateChat() {
     },
     computed: {
       filteredFriends() {
-        const q = this.participantQuery.toLowerCase();
+        const q = this.participantQuery;
         return this.friends.filter(
-          (f) => f.toLowerCase().includes(q) && !this.participants.includes(f)
+          (f) => f.includes(q) && !this.participants.includes(f)
         );
       },
     },

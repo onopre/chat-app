@@ -11,11 +11,33 @@
   background-color: #ddd3f5;
 }
 
-.message-bubble-you {
+/*.message-bubble-you {
+  flex-direction: column;    
+  box-sizing: border-box;
+}*/
+
+.you-wrapper {
+  display: flex;
+  flex-direction: row;
   align-self: flex-end;
-  border-bottom-right-radius: 4px;
+  align-items: center;
+  justify-content: flex-end;
 }
 
+.message-bubble-you {
+  /*align-self: flex-end;*/
+  width: 100%;
+  display: flex;
+  /*flex-grow: 1;*/
+  text-align: right;
+  border-bottom-right-radius: 4px;
+  flex-direction: column;
+}
+
+message-actions {
+  align-self: center;
+  background-color: #ddd3f5;
+}
 .message-bubble-other {
   align-self: flex-start;
   color: black;
@@ -29,17 +51,25 @@
 
 .message-edit-form {
   display: flex;
+  flex-direction: column;
+  width: 100%; /* inherit bubble width */
+  max-width: 100%;
   gap: 0.5rem;
   margin-top: 0.3rem;
+  box-sizing: border-box;
 }
 
-.message-edit-form input[type="text"] {
-  flex: 1;
+.message-edit-form textarea {
+  /*flex: 1;*/
+  width: 100%;
+  min-height: 2rem;
+  resize: vertical;
   padding: 0.5rem 0.75rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 0.95rem;
   background-color: #fff;
+  box-sizing: border-box;
 }
 
 .message-metadata {

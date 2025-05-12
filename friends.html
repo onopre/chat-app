@@ -1,57 +1,77 @@
 <div v-if="username === this.$graffitiSession.value.actor" class="profile-view">
-  <article class="friends">
-    <form @submit.prevent="addFriend(friendActor, $graffitiSession.value)">
-      <label for="friendActor"> Choose a friend to add </label>
-      <input
-        id="friendActor"
-        v-model="friendActor"
-        placeholder="https://alice.example.com"
-      />
-      <input type="submit" value="Add Friend" />
-    </form>
-  </article>
-  <article class="profile-friends">
-    <div class="friends">
-      <h2>My Friends</h2>
-      <ul>
-        <li v-for="friend in accepted">
-          {{ friend }}
-          <button
-            @click="friendObjects
+  <graffiti-discover
+    v-slot="{ objects: otherProfiles, isOtherInitialPolling }"
+    :channels="['designftw-2025-studio2']"
+    :schema="profileSchema"
+  >
+    <p v-if="isOtherInitialPolling">Loading...</p>
+    <template v-else>
+      <article class="profile-friends">
+        <div class="friends">
+          <h2>My Friends</h2>
+          <ul>
+            <li v-for="friend in accepted">
+              <router-link :to="`/profile/?username=${friend}`"
+                >{{ friend }}</router-link
+              >
+              <button
+                @click="friendObjects
                     .filter(f => f.value.target === friend)
                     .forEach(f => $graffiti.delete(f, $graffitiSession.value))"
-          >
-            Unfriend
-          </button>
-        </li>
-      </ul>
-    </div>
+              >
+                Unfriend
+              </button>
+            </li>
+          </ul>
+        </div>
 
-    <div class="friends">
-      <h2>Friend Requests</h2>
-      <ul>
-        <li v-for="friend in friendRequests">
-          {{ friend }}
-          <button @click="addFriend(friend, $graffitiSession.value)">
-            Confirm
-          </button>
-        </li>
-      </ul>
-    </div>
-    <div class="friends">
-      <h2>Sent Requests</h2>
-      <ul>
-        <li v-for="friend in sentRequests">
-          {{ friend }}
-          <button
-            @click="friendObjects
+        <div class="friends">
+          <h2>Friend Requests</h2>
+          <ul>
+            <li v-for="friend in friendRequests">
+              <router-link :to="`/profile/?username=${friend}`"
+                >{{ friend }}</router-link
+              >
+              <button @click="addFriend(friend, $graffitiSession.value)">
+                Confirm
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="friends">
+          <h2>Sent Requests</h2>
+          <ul>
+            <li v-for="friend in sentRequests">
+              <router-link :to="`/profile/?username=${friend}`"
+                >{{ friend }}</router-link
+              >
+              <button
+                @click="friendObjects
                     .filter(f => f.value.target === friend)
                     .forEach(f => $graffiti.delete(f, $graffitiSession.value))"
-          >
-            Cancel
-          </button>
-        </li>
-      </ul>
-    </div>
-  </article>
+              >
+                Cancel
+              </button>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="friends">
+        <h2>All users</h2>
+        <ul>
+          <li v-for="profile in getUnique(otherProfiles)">
+            <router-link :to="`/profile/?username=${profile.value.describes}`"
+              >{{ profile.value.name }}
+            </router-link>
+            <button
+              @click="addFriend(profile.value.describes, $graffitiSession.value)"
+            >
+              Add Friend
+            </button>
+          </li>
+        </ul>
+      </article>
+    </template>
+  </graffiti-discover>
 </div>

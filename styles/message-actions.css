@@ -4,11 +4,16 @@
 }
 
 .actions-toggle {
-  background: none;
+  background-color: #ddd3f5;
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
   padding: 0.2rem;
+  color: #333;
+}
+.actions-toggle:hover {
+  background-color: #c8bfff;
+  color: #5137f3;
 }
 
 .actions-popup {
@@ -23,6 +28,7 @@
   display: flex;
   flex-direction: column;
   z-index: 10;
+  min-width: 100px;
 }
 
 .actions-popup button {

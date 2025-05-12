@@ -25,6 +25,7 @@
         </div>
         <graffiti-discover
           v-slot="{ objects: messageObjects, isInitialPolling }"
+          autopoll
           :channels="[channel]"
           :schema="messageSchema"
         >

@@ -11,6 +11,7 @@
           v-model="chatName"
           placeholder="Chat Name"
           ref="chatInput"
+          maxlength="30"
         />
         <input
           type="submit"
@@ -23,6 +24,7 @@
           v-model="participantQuery"
           placeholder="Type to search friends"
           @keydown.enter.prevent="addFriend"
+          maxlength="30"
         />
         <div class="selected-participants">
           <span

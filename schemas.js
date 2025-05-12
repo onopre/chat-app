@@ -1,15 +1,15 @@
 export const profileSchema = {
   properties: {
     value: {
-      required: ["type", "describes", "published", "generator", "name", "icon"],
+      required: ["describes", "generator", "name", "pronouns", "bio"],
       properties: {
-        type: { const: "Profile" },
+        //type: { const: "Profile" },
         name: { type: "string" },
         pronouns: { type: "string" },
         bio: { type: "string" },
-        icon: { type: "string" },
+        //icon: { type: "string" },
         describes: { type: "string" },
-        published: { type: "number" },
+        //published: { type: "number" },
         generator: { type: "string" },
       },
     },
