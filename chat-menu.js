@@ -40,7 +40,11 @@ export async function ChatMenu() {
   return {
     props: ["currentChatChannel", "groupChatObjects"],
     data() {
-      const today = new Date().toISOString().split("T")[0];
+      const today = new Date();
+      const lastMonth = new Date(today);
+      lastMonth.setMonth(today.getMonth() - 1);
+      //console.log("lastMonth", lastMonth.toISOString().split("T")[0]);
+      //console.log("today", today.toISOString().split("T")[0]);
       return {
         renameText: "",
         inviteeActor: "",
@@ -53,17 +57,17 @@ export async function ChatMenu() {
         participantsSchema: participantsSchema,
         searching: false,
 
-        fromDate: "2021-01-01",
+        fromDate: lastMonth.toISOString().split("T")[0],
         fromHour: "00",
         fromMinute: "00",
         fromAmPm: "AM",
-        toDate: today,
+        toDate: today.toISOString().split("T")[0],
         toHour: "11",
         toMinute: "59",
         toAmPm: "PM",
-        goTo: "earliest", // "earliest" or "latest"
+        goTo: "latest", // "earliest" or "latest"
         keyword: "",
-        similarWords: false,
+        misspelledWords: true,
         waitForSearch: false,
         searchMessage: "",
         messageFadingOut: false,
@@ -73,23 +77,43 @@ export async function ChatMenu() {
       actor() {
         return this.$graffitiSession.value.actor;
       },
-    },
-    methods: {
-      getParticipantList,
-      async search() {
-        this.waitForSearch = true;
-        const fromTimestamp = createTimestamp(
+      fromTimestamp() {
+        return createTimestamp(
           this.fromDate,
           this.fromHour,
           this.fromMinute,
           this.fromAmPm
         );
-        const toTimestamp = createTimestamp(
+      },
+      toTimestamp() {
+        return createTimestamp(
           this.toDate,
           this.toHour,
           this.toMinute,
           this.toAmPm
         );
+      },
+      isTimeRangeValid() {
+        return this.fromTimestamp < this.toTimestamp;
+      },
+    },
+    methods: {
+      getParticipantList,
+      async search() {
+        if (!this.isTimeRangeValid) {
+          this.searchMessage =
+            "Invalid time range: 'From' must be before 'Until'.";
+          this.messageFadingOut = false;
+          setTimeout(() => {
+            this.messageFadingOut = true;
+          }, 2000);
+          setTimeout(() => {
+            this.searchMessage = "";
+            this.messageFadingOut = false;
+          }, 3000);
+          return;
+        }
+        this.waitForSearch = true;
         const messageObjectsIterator = await this.$graffiti.discover(
           [this.currentChatChannel],
           messageSchema
@@ -97,14 +121,57 @@ export async function ChatMenu() {
         const newMessageObjects = [];
         for await (const { object } of messageObjectsIterator) {
           if (
-            fromTimestamp <= object.value.published &&
-            object.value.published <= toTimestamp
+            this.fromTimestamp <= object.value.published &&
+            object.value.published <= this.toTimestamp
           ) {
             if (!this.keyword) {
               newMessageObjects.push(object);
             } else {
-              if (object.value.content.toLowerCase().includes(this.keyword)) {
-                newMessageObjects.push(object);
+              const words_to_check = [this.keyword];
+              if (this.misspelledWords) {
+                for (let i = 0; i < this.keyword.length; i++) {
+                  // missing letter
+                  let word =
+                    this.keyword.slice(0, i) + this.keyword.slice(i + 1);
+                  words_to_check.push(word);
+                  // transposed letter
+                  if (i < this.keyword.length - 1) {
+                    word =
+                      this.keyword.slice(0, i) +
+                      this.keyword[i + 1] +
+                      this.keyword[i] +
+                      this.keyword.slice(i + 2);
+                    words_to_check.push(word);
+                  }
+                  // added character
+                  for (let j = 0; j < 128; j++) {
+                    const char = String.fromCharCode(j);
+                    word =
+                      this.keyword.slice(0, i) + char + this.keyword.slice(i);
+                    words_to_check.push(word);
+                  }
+                  // replaced character
+                  for (let j = 0; j < 128; j++) {
+                    const char = String.fromCharCode(j);
+                    word =
+                      this.keyword.slice(0, i) +
+                      char +
+                      this.keyword.slice(i + 1);
+                    words_to_check.push(word);
+                  }
+                }
+                // added character
+                for (let j = 0; j < 128; j++) {
+                  const char = String.fromCharCode(j);
+                  const word = this.keyword + char;
+                  words_to_check.push(word);
+                }
+              }
+              console.log("words_to_check", words_to_check);
+              for (const word of words_to_check) {
+                if (object.value.content.toLowerCase().includes(word)) {
+                  newMessageObjects.push(object);
+                }
               }
             }
           }

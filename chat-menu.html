@@ -176,8 +176,8 @@
             </div>
 
             <label class="checkbox-row">
-              <input type="checkbox" v-model="similarWords" disabled />
-              similar words (coming soon)
+              <input type="checkbox" v-model="misspelledWords" />
+              misspelled words
             </label>
           </div>
 
@@ -185,6 +185,7 @@
           <input
             class="search-btn"
             type="submit"
+            :disabled="!isTimeRangeValid || waitForSearch"
             :value="waitForSearch? 'Searching...' : 'S e a r c h'"
           />
           <p
@@ -196,6 +197,9 @@
             }"
           >
             {{ searchMessage }}
+          </p>
+          <p v-if="!isTimeRangeValid" class="error-text">
+            Invalid range: start must be before end.
           </p>
         </fieldset>
       </form>

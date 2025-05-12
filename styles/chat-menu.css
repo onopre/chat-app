@@ -177,16 +177,6 @@ input[type="text"] {
   }
 }
 
-.checkbox-row {
-  color: gray;
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.checkbox-row input {
-  pointer-events: none;
-}
-
 .search-message {
   opacity: 0;
   transition: opacity 1s ease;
@@ -203,4 +193,9 @@ input[type="text"] {
 /* Fade out when dismissing */
 .search-message.fade-out {
   opacity: 0;
+}
+.error-text {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
 }
